@@ -56,7 +56,7 @@ export const customStyles = {
     padding: 'calc(12px - 1px) calc(12px - 1px)',
     width: '',
     lineHeight: 1,
-    color: state.isSelected ? '#000' : '',
+    color: state.isSelected ? '#341c00' : '',
     border: state.isSelected ? '1px solid var(--c-zircon)' : '1px solid transparent',
     borderRadius: state.isSelected && 30,
     backgroundColor: state.isSelected ? 'var(--c-alabaster)' : '',

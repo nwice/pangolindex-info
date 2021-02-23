@@ -19,6 +19,7 @@ import {
   ALL_TOKENS,
   TOP_LPS_PER_PAIRS,
 } from '../apollo/queries'
+import CoinGecko from 'coingecko-api'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { useAllPairData } from './PairData'
 const UPDATE = 'UPDATE'
@@ -33,6 +34,8 @@ const UPDATE_TOP_LPS = 'UPDATE_TOP_LPS'
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
 dayjs.extend(weekOfYear)
+
+const coinGeckoClient = new CoinGecko()
 
 const GlobalDataContext = createContext()
 
@@ -237,32 +240,33 @@ async function getGlobalData(ethPrice, oldEthPrice) {
       query: GLOBAL_DATA(),
       fetchPolicy: 'cache-first',
     })
-    data = result.data.uniswapFactories[0]
+    console.log('global result:', result);
+    data = result.data.pangolinFactories[0]
 
     // fetch the historical data
     let oneDayResult = await client.query({
       query: GLOBAL_DATA(oneDayBlock?.number),
       fetchPolicy: 'cache-first',
     })
-    oneDayData = oneDayResult.data.uniswapFactories[0]
+    oneDayData = oneDayResult.data.pangolinFactories[0]
 
     let twoDayResult = await client.query({
       query: GLOBAL_DATA(twoDayBlock?.number),
       fetchPolicy: 'cache-first',
     })
-    twoDayData = twoDayResult.data.uniswapFactories[0]
+    twoDayData = twoDayResult.data.pangolinFactories[0]
 
     let oneWeekResult = await client.query({
       query: GLOBAL_DATA(oneWeekBlock?.number),
       fetchPolicy: 'cache-first',
     })
-    const oneWeekData = oneWeekResult.data.uniswapFactories[0]
+    const oneWeekData = oneWeekResult.data.pangolinFactories[0]
 
     let twoWeekResult = await client.query({
       query: GLOBAL_DATA(twoWeekBlock?.number),
       fetchPolicy: 'cache-first',
     })
-    const twoWeekData = twoWeekResult.data.uniswapFactories[0]
+    const twoWeekData = twoWeekResult.data.pangolinFactories[0]
 
     if (data && oneDayData && twoDayData && twoWeekData) {
       let [oneDayVolumeUSD, volumeChangeUSD] = get2DayPercentChange(
@@ -329,8 +333,8 @@ const getChartData = async (oldestDateToFetch) => {
         fetchPolicy: 'cache-first',
       })
       skip += 1000
-      data = data.concat(result.data.uniswapDayDatas)
-      if (result.data.uniswapDayDatas.length < 1000) {
+      data = data.concat(result.data.pangolinDayDatas)
+      if (result.data.pangolinDayDatas.length < 1000) {
         allFound = true
       }
     }
@@ -438,6 +442,41 @@ const getGlobalTransactions = async () => {
  */
 const getEthPrice = async () => {
   const utcCurrentTime = dayjs()
+  const utcOneDayBack = utcCurrentTime.subtract(1, 'day').startOf('minute').unix() * 1000
+
+  let result = await coinGeckoClient.simple.price({
+    ids: ['avalanche-2'],
+    vs_currencies: ['usd'],
+    include_24hr_change: ['true']
+  })
+
+  console.log('price result:', result);
+  let ethPrice = result['data']['avalanche-2']['usd']
+  let priceChangeETH = result['data']['avalanche-2']['usd_24h_change']
+
+  result = await coinGeckoClient.coins.fetchMarketChart('avalanche-2', {
+    days: 1,
+    vs_currency: 'usd'
+  })
+
+  let ethPriceOneDay = 0
+
+  let i
+  let snapshot
+  for (i = 0; i < result['data']['prices'].length; i++) {
+    snapshot = result['data']['prices'][i]
+    if (snapshot[0] > utcOneDayBack) {
+      ethPriceOneDay = snapshot[1]
+      break
+    }
+  }
+  let resultTriplet = [ethPrice, ethPriceOneDay, priceChangeETH];
+  console.log('result triplet:', resultTriplet);
+  return resultTriplet;
+}
+
+const getEthPriceOrig = async () => {
+  const utcCurrentTime = dayjs()
   const utcOneDayBack = utcCurrentTime.subtract(1, 'day').startOf('minute').unix()
 
   let ethPrice = 0
@@ -470,7 +509,7 @@ const PAIRS_TO_FETCH = 500
 const TOKENS_TO_FETCH = 500
 
 /**
- * Loop through every pair on uniswap, used for search
+ * Loop through every pair on pangolin, used for search
  */
 async function getAllPairsOnUniswap() {
   try {
@@ -670,7 +709,7 @@ export function useTopLps() {
             if (results) {
               return results.liquidityPositions
             }
-          } catch (e) {}
+          } catch (e) { }
         })
       )
 

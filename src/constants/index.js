@@ -1,4 +1,7 @@
-export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+export const WAVAX_ADDRESS = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
+
+//export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+export const FACTORY_ADDRESS = '0xefa94DE7a4656D787667C749f7E1223D71E9FD88'
 
 export const BUNDLE_ID = '1'
 
@@ -12,8 +15,8 @@ export const timeframeOptions = {
 
 // token list urls to fetch tokens from - use for warnings on tokens and pairs
 export const SUPPORTED_LIST_URLS__NO_ENS = [
-  'https://gateway.ipfs.io/ipns/tokens.uniswap.org',
-  'https://www.coingecko.com/tokens_list/uniswap/defi_100/v_0_0_0.json',
+  'https://raw.githubusercontent.com/pangolindex/tokenlists/main/aeb.tokenlist.json',
+  'https://raw.githubusercontent.com/pangolindex/tokenlists/main/top15.tokenlist.json'
 ]
 
 // hide from overview list
@@ -23,6 +26,7 @@ export const TOKEN_BLACKLIST = [
   '0xe31debd7abff90b06bca21010dd860d8701fd901',
   '0xfc989fbb6b3024de5ca0144dc23c18a063942ac1',
   '0xf4eda77f0b455a12f3eb44f8653835f377e36b76',
+  '0x820ae7bf39792d7ce7befc70b0172f4d267f1938' // JOY
 ]
 
 // pair blacklist

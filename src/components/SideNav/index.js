@@ -9,6 +9,8 @@ import { TYPE } from '../../Theme'
 import { withRouter } from 'react-router-dom'
 import { TrendingUp, List, PieChart, Disc } from 'react-feather'
 import Link from '../Link'
+
+import Twitter from '../../assets/twitter.svg'
 import { useSessionStart } from '../../contexts/Application'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import Toggle from '../Toggle'
@@ -164,28 +166,25 @@ function SideNav({ history }) {
           </AutoColumn>
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
             <HeaderText>
-              <Link href="https://uniswap.org" target="_blank">
-                Uniswap.org
+              <Link href="https://app.pangolin.exchange" target="_blank">
+                Pangolin
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://v1.uniswap.info" target="_blank">
-                V1 Analytics
-              </Link>
-            </HeaderText>
-            <HeaderText>
-              <Link href="https://uniswap.org/docs/v2" target="_blank">
-                Docs
-              </Link>
-            </HeaderText>
-            <HeaderText>
-              <Link href="https://discord.com/invite/FCfyBSbCU5" target="_blank">
+              <Link href="https://chat.avalabs.org" target="_blank">
                 Discord
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://twitter.com/UniswapProtocol" target="_blank">
-                Twitter
+              <img width={'24px'} src={Twitter} alt="logo" />
+              <Link href="https://twitter.com/avalancheavax" target="_blank">
+                Twit
+              </Link>
+            </HeaderText>
+            <HeaderText>
+              <img width={'24px'} src={Twitter} alt="logo" />
+              <Link href="https://twitter.com/avalancheavax" target="_blank">
+                Twit
               </Link>
             </HeaderText>
             <Toggle isActive={isDark} toggle={toggleDarkMode} />
@@ -202,10 +201,10 @@ function SideNav({ history }) {
           )}
         </DesktopWrapper>
       ) : (
-        <MobileWrapper>
-          <Title />
-        </MobileWrapper>
-      )}
+          <MobileWrapper>
+            <Title />
+          </MobileWrapper>
+        )}
     </Wrapper>
   )
 }

@@ -76,6 +76,10 @@ async function getPrincipalForUserPerPair(user: string, pairAddress: string) {
     }
     amount0 += parseFloat(mint.amount0)
     amount1 += parseFloat(mint.amount1)
+
+    // KM amount0 += amount0 + parseFloat(mint.amount0)
+    // KM amount1 += amount1 + parseFloat(mint.amount1)
+
   }
 
   for (const index in results.data.burns) {
@@ -275,6 +279,7 @@ export async function getLPReturnsOnPair(user: string, pair, ethPrice: number, s
     reserve0: pair.reserve0,
     reserve1: pair.reserve1,
     reserveUSD: pair.reserveUSD,
+    // KM reserveUSD: pair.reserveUSD * ethPrice,
     token0PriceUSD: pair.token0.derivedETH * ethPrice,
     token1PriceUSD: pair.token1.derivedETH * ethPrice,
   }

@@ -4,7 +4,8 @@ import { HttpLink } from 'apollo-link-http'
 
 export const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+    //uri: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+    uri: 'https://graph-node.avax.network/subgraphs/name/dasconnor/pangolindex',
   }),
   cache: new InMemoryCache(),
   shouldBatch: true,
@@ -13,14 +14,6 @@ export const client = new ApolloClient({
 export const healthClient = new ApolloClient({
   link: new HttpLink({
     uri: 'https://api.thegraph.com/index-node/graphql',
-  }),
-  cache: new InMemoryCache(),
-  shouldBatch: true,
-})
-
-export const v1Client = new ApolloClient({
-  link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap',
   }),
   cache: new InMemoryCache(),
   shouldBatch: true,
@@ -36,7 +29,7 @@ export const stakingClient = new ApolloClient({
 
 export const blockClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+    uri: 'https://graph-node.avax.network/subgraphs/name/dasconnor/avalancheblocks',
   }),
   cache: new InMemoryCache(),
 })

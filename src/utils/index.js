@@ -8,7 +8,7 @@ import { GET_BLOCK, GET_BLOCKS, SHARE_VALUE } from '../apollo/queries'
 import { Text } from 'rebass'
 import _Decimal from 'decimal.js-light'
 import toFormat from 'toformat'
-import { timeframeOptions } from '../constants'
+import { timeframeOptions, WAVAX_ADDRESS } from '../constants'
 import Numeral from 'numeral'
 
 // format libraries
@@ -40,42 +40,39 @@ export function getTimeframe(timeWindow) {
 export function getPoolLink(token0Address, token1Address = null, remove = false) {
   if (!token1Address) {
     return (
-      `https://uniswap.exchange/` +
+      `https://app.pangolin.exchange/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address}/${'ETH'}`
+      `/${token0Address === WAVAX_ADDRESS ? 'AVAX' : token0Address}/${'AVAX'}`
     )
   } else {
     return (
-      `https://uniswap.exchange/` +
+      `https://app.pangolin.exchange/#/` +
       (remove ? `remove` : `add`) +
-      `/${token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address}/${
-        token1Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token1Address
-      }`
+      `/${token0Address === WAVAX_ADDRESS ? 'AVAX' : token0Address}/${token1Address === WAVAX_ADDRESS ? 'AVAX' : token1Address}`
     )
   }
 }
 
 export function getSwapLink(token0Address, token1Address = null) {
   if (!token1Address) {
-    return `https://uniswap.exchange/swap?inputCurrency=${token0Address}`
+    return `https://app.pangolin.exchange/#/swap?inputCurrency=${token0Address}`
   } else {
-    return `https://uniswap.exchange/swap?inputCurrency=${
-      token0Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token0Address
-    }&outputCurrency=${token1Address === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : token1Address}`
+    return `https://app.pangolin.exchange/#/swap?inputCurrency=${token0Address === WAVAX_ADDRESS ? 'AVAX' : token0Address
+      }&outputCurrency=${token1Address === WAVAX_ADDRESS ? 'AVAX' : token1Address}`
   }
 }
 
 export function getMiningPoolLink(token0Address) {
-  return `https://app.uniswap.org/#/uni/ETH/${token0Address}`
+  return `https://app.pangolin.exchange/#/png/AVAX/${token0Address}`
 }
 
 export function getUniswapAppLink(linkVariable) {
-  let baseUniswapUrl = 'https://app.uniswap.org/#/uni'
+  let baseUniswapUrl = 'https://app.pangolin.exchange/#/png'
   if (!linkVariable) {
     return baseUniswapUrl
   }
 
-  return `${baseUniswapUrl}/ETH/${linkVariable}`
+  return `${baseUniswapUrl}/AVAX/${linkVariable}`
 }
 
 export function localNumber(val) {
@@ -303,10 +300,10 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://etherscan.io/tx/${tx}/`,
-  showAddress: (address) => `https://www.etherscan.io/address/${address}/`,
-  showToken: (address) => `https://www.etherscan.io/token/${address}/`,
-  showBlock: (block) => `https://etherscan.io/block/${block}/`,
+  showTransaction: (tx) => `https://cchain.explorer.avax.network/tx/${tx}/`,
+  showAddress: (address) => `https://cchain.explorer.avax.network/address/${address}/`,
+  showToken: (address) => `https://cchain.explorer.avax.network/token/${address}/`,
+  showBlock: (block) => `https://cchain.explorer.avax.network/blocks/${block}/`,
 }
 
 export const formatTime = (unix) => {
