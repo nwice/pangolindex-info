@@ -19,9 +19,15 @@ function AllPairsPage() {
     window.scrollTo(0, 0)
   }, [])
 
+  const trackText = `USD amounts may be inaccurate in low liquidity pairs or pairs without AVAX or stablecoins backing.`
+
+  const rewardText = `Liquidity providers are rewarded in PNG for pairings`
+
   const below800 = useMedia('(max-width: 800px)')
 
   const [useTracked, setUseTracked] = useState(true)
+
+  const [useRewarded, setUseRewarded] = useState(true)
 
   return (
     <PageWrapper>
@@ -31,11 +37,13 @@ function AllPairsPage() {
           {!below800 && <Search small={true} />}
         </RowBetween>
         <AutoRow gap="4px">
-          <CheckBox checked={useTracked} setChecked={() => setUseTracked(!useTracked)} text={'Hide unstable pairs'} />
-          <QuestionHelper text="USD amounts may be inaccurate in low liquiidty pairs or pairs without ETH or stablecoins." />
+          <CheckBox checked={useTracked} setChecked={() => setUseTracked(!useTracked)} text={'Stable'} />
+          <QuestionHelper text={trackText} />
+          <CheckBox checked={useRewarded} setChecked={() => setUseRewarded(!useRewarded)} text={'LP Reward'} />
+          <QuestionHelper text={rewardText} />
         </AutoRow>
         <Panel style={{ padding: below800 && '1rem 0 0 0 ' }}>
-          <PairList pairs={allPairs} disbaleLinks={true} maxItems={50} useTracked={useTracked} />
+          <PairList pairs={allPairs} disbaleLinks={true} maxItems={50} useTracked={useTracked} useRewarded={useRewarded} />
         </Panel>
       </FullWrapper>
     </PageWrapper>

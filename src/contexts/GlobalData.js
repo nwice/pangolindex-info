@@ -306,7 +306,7 @@ async function getGlobalData(ethPrice, oldEthPrice) {
   } catch (e) {
     console.log(e)
   }
-
+  console.log('getGlobalData data:', data);
   return data
 }
 

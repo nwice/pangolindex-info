@@ -169,7 +169,7 @@ function TokenPage({ address, history }) {
     })
   }, [])
 
-  const [useTracked, setUseTracked] = useState(true)
+  const [useTracked, setUseTracked, useRewarded, setUseRewarded] = useState(true)
 
   const BlockedWrapper = styled.div`
     width: 100%;
@@ -380,9 +380,14 @@ function TokenPage({ address, history }) {
                 <Checkbox
                   checked={useTracked}
                   setChecked={() => setUseTracked(!useTracked)}
-                  text={'Hide unstable pairs'}
+                  text={'Hide unstable pairs yo'}
                 />
                 <QuestionHelper text="USD amounts may be inaccurate in low liquiidty pairs or pairs without ETH or stablecoins." />
+                <Checkbox
+                  checked={useRewarded}
+                  setChecked={() => setUseRewarded(!useRewarded)}
+                  text={'rewarded'}
+                />
               </AutoRow>
             </RowBetween>
             <Panel
@@ -393,7 +398,7 @@ function TokenPage({ address, history }) {
               }}
             >
               {address && fetchedPairsList ? (
-                <PairList color={backgroundColor} address={address} pairs={fetchedPairsList} useTracked={useTracked} />
+                <PairList color={backgroundColor} address={address} pairs={fetchedPairsList} useTracked={useTracked} useRewarded={useRewarded} />
               ) : (
                   <Loader />
                 )}

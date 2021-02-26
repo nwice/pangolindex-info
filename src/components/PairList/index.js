@@ -9,15 +9,34 @@ import styled from 'styled-components'
 import { CustomLink } from '../Link'
 import { Divider } from '../../components'
 import { withRouter } from 'react-router-dom'
-import { formattedNum, formattedPercent } from '../../utils'
+import { formattedNum, formattedPercent, toK } from '../../utils'
 import DoubleTokenLogo from '../DoubleLogo'
 import FormattedName from '../FormattedName'
 import QuestionHelper from '../QuestionHelper'
 import { TYPE } from '../../Theme'
-import { PAIR_BLACKLIST } from '../../constants'
+import { PAIR_BLACKLIST, TOKEN_REWARDED } from '../../constants'
 import { AutoColumn } from '../Column'
+import { useEthPrice } from '../../contexts/GlobalData'
 
 dayjs.extend(utc)
+
+function sortedPair(p1, p2) {
+  if (p1 === 'PNG') {
+    return p2 + '-' + p1;
+  } else if (p1 === 'WAVAX' && p2 !== 'PNG') {
+    return p2 + '-' + p1;
+  }
+  return p1 + '-' + p2
+}
+
+function sortedTokenId(pairData, top = true) {
+  if (pairData.token0.symbol === 'PNG') {
+    return top ? pairData.token1.id : pairData.token0.id;
+  } else if (pairData.token0.symbol === 'WAVAX' && pairData.token1.symbol !== 'PNG') {
+    return top ? pairData.token1.id : pairData.token0.id;
+  }
+  return top ? pairData.token0.id : pairData.token1.id;
+}
 
 const PageButtons = styled.div`
   width: 100%;
@@ -133,13 +152,13 @@ const formatDataText = (value, trackedValue, supressWarning = false) => {
     <AutoColumn gap="2px" style={{ opacity: showUntracked ? '0.7' : '1' }}>
       <div style={{ textAlign: 'right' }}>{value}</div>
       <TYPE.light fontSize={'9px'} style={{ textAlign: 'right' }}>
-        {showUntracked ? 'unstable' : '  '}
+        {showUntracked ? 'unstable' : ' '}
       </TYPE.light>
     </AutoColumn>
   )
 }
 
-function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = false }) {
+function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = false, useRewarded = false }) {
   const below600 = useMedia('(max-width: 600px)')
   const below740 = useMedia('(max-width: 740px)')
   const below1080 = useMedia('(max-width: 1080px)')
@@ -170,6 +189,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
 
   const ListItem = ({ pairAddress, index }) => {
     const pairData = pairs[pairAddress]
+    const [ethPrice] = useEthPrice()
 
     if (pairData && pairData.token0 && pairData.token1) {
       const liquidity = formattedNum(
@@ -178,27 +198,27 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
       )
 
       const volume = formattedNum(
-        pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD : pairData.oneDayVolumeUntracked,
+        ethPrice * (pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD : pairData.oneDayVolumeUntracked),
         true
       )
 
       const apy = formattedPercent(
-        ((pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD : pairData.oneDayVolumeUntracked) * 0.003 * 365 * 100) /
-          (pairData.oneDayVolumeUSD ? pairData.trackedReserveUSD : pairData.reserveUSD)
+        ethPrice * ((pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD : pairData.oneDayVolumeUntracked) * 0.003 * 365 * 100) /
+        (pairData.oneDayVolumeUSD ? pairData.trackedReserveUSD : pairData.reserveUSD)
       )
 
       const weekVolume = formattedNum(
-        pairData.oneWeekVolumeUSD ? pairData.oneWeekVolumeUSD : pairData.oneWeekVolumeUntracked,
+        ethPrice * (pairData.oneWeekVolumeUSD ? pairData.oneWeekVolumeUSD : pairData.oneWeekVolumeUntracked),
         true
       )
 
       const fees = formattedNum(
-        pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD * 0.003 : pairData.oneDayVolumeUntracked * 0.003,
+        ethPrice * (pairData.oneDayVolumeUSD ? pairData.oneDayVolumeUSD * 0.003 : pairData.oneDayVolumeUntracked * 0.003),
         true
       )
 
       if (pairAddress === '0xf52f433b79d21023af94251958bed3b64a2b7930') {
-        console.log(apy.toString())
+        console.log('apy:', apy.toString())
       }
 
       return (
@@ -206,14 +226,15 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
           <DataText area="name" fontWeight="500">
             {!below600 && <div style={{ marginRight: '20px', width: '10px' }}>{index}</div>}
             <DoubleTokenLogo
+              address={pairAddress}
               size={below600 ? 16 : 20}
-              a0={pairData.token0.id}
-              a1={pairData.token1.id}
+              a0={sortedTokenId(pairData)}
+              a1={sortedTokenId(pairData, false)}
               margin={!below740}
             />
             <CustomLink style={{ marginLeft: '20px', whiteSpace: 'nowrap' }} to={'/pair/' + pairAddress} color={color}>
               <FormattedName
-                text={pairData.token0.symbol + '-' + pairData.token1.symbol}
+                text={sortedPair(pairData.token0.symbol, pairData.token1.symbol)}
                 maxCharacters={below600 ? 8 : 16}
                 adjustSize={true}
                 link={true}
@@ -240,7 +261,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
     pairs &&
     Object.keys(pairs)
       .filter(
-        (address) => !PAIR_BLACKLIST.includes(address) && (useTracked ? !!pairs[address].trackedReserveUSD : true)
+        (address) => !PAIR_BLACKLIST.includes(address) && (useTracked ? !!pairs[address].trackedReserveUSD : true) && (useRewarded ? TOKEN_REWARDED.includes(address) : true)
       )
       .sort((addressA, addressB) => {
         const pairA = pairs[addressA]

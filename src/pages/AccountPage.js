@@ -21,6 +21,7 @@ import { BasicLink } from '../components/Link'
 import { useMedia } from 'react-use'
 import Search from '../components/Search'
 import { useSavedAccounts } from '../contexts/LocalStorage'
+import { useEthPrice } from '../contexts/GlobalData'
 
 const AccountWrapper = styled.div`
   background-color: rgba(255, 255, 255, 0.2);
@@ -160,6 +161,9 @@ function AccountPage({ account }) {
     ; (isBookmarked ? removeAccount : addAccount)(account)
   }, [account, isBookmarked, addAccount, removeAccount])
 
+
+  const [ethPrice] = useEthPrice()
+
   return (
     <PageWrapper>
       <ContentWrapper>
@@ -178,7 +182,7 @@ function AccountPage({ account }) {
             <span>
               <TYPE.header fontSize={24}>{account?.slice(0, 6) + '...' + account?.slice(38, 42)}</TYPE.header>
               <Link lineHeight={'145.23%'} href={'https://cchain.explorer.avax.network/address/' + account} target="_blank">
-                <TYPE.main fontSize={14}>View on Etherscan</TYPE.main>
+                <TYPE.main fontSize={14}>View on Avalanche</TYPE.main>
               </Link>
             </span>
             <AccountWrapper>
@@ -271,7 +275,7 @@ function AccountPage({ account }) {
                   <RowFixed align="flex-end">
                     <TYPE.header fontSize={'24px'} lineHeight={1}>
                       {positionValue
-                        ? formattedNum(positionValue, true)
+                        ? formattedNum(positionValue * ethPrice, true)
                         : positionValue === 0
                           ? formattedNum(0, true)
                           : '-'}

@@ -11,6 +11,10 @@ import { TrendingUp, List, PieChart, Disc } from 'react-feather'
 import Link from '../Link'
 
 import Twitter from '../../assets/twitter.svg'
+import AvaxLogo from '../../assets/avax_red_logo.png'
+import PngLogo from '../../assets/pango_white.svg'
+import DiscordLogo from '../../assets/discord.svg'
+import TelegramLogo from '../../assets/telegram_logo.svg'
 import { useSessionStart } from '../../contexts/Application'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import Toggle from '../Toggle'
@@ -167,27 +171,30 @@ function SideNav({ history }) {
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
             <HeaderText>
               <Link href="https://app.pangolin.exchange" target="_blank">
-                Pangolin
+                <img width={'24px'} src={PngLogo} alt="Pangolindex" /> App
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://chat.avalabs.org" target="_blank">
-                Discord
+              <Link href="https://discord.gg/PARrDYYbfw" target="_blank">
+                <img width={'24px'} src={DiscordLogo} alt="Discord" />
               </Link>
             </HeaderText>
             <HeaderText>
-              <img width={'24px'} src={Twitter} alt="logo" />
-              <Link href="https://twitter.com/avalancheavax" target="_blank">
-                Twit
+              <Link href="https://twitter.com/pangolindex" target="_blank">
+                <img width={'24px'} src={Twitter} alt="Twitter" />
               </Link>
             </HeaderText>
             <HeaderText>
-              <img width={'24px'} src={Twitter} alt="logo" />
-              <Link href="https://twitter.com/avalancheavax" target="_blank">
-                Twit
+              <Link href="https://twitter.com/pangolindex" target="_blank">
+                <img width={'24px'} src={TelegramLogo} alt="Twitter" />
               </Link>
             </HeaderText>
             <Toggle isActive={isDark} toggle={toggleDarkMode} />
+            <HeaderText>
+              <Link href="https://twitter.com/avalancheavax" target="_blank">
+                <img width={'24px'} src={AvaxLogo} alt="Twitter" />
+              </Link>
+            </HeaderText>
           </AutoColumn>
           {!below1180 && (
             <Polling style={{ marginLeft: '.5rem' }}>

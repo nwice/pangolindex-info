@@ -6,7 +6,6 @@ import { Flex } from 'rebass'
 import Link from '../Link'
 import { RowFixed } from '../Row'
 import Logo from '../../assets/pango_white.svg'
-import Twitter from '../../assets/twitter.svg'
 //import Wordmark from '../../assets/wordmark_white.svg'
 import Wordmark from '../../assets/wordmark_pango.png'
 
