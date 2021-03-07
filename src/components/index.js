@@ -22,7 +22,8 @@ export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.text1};
+  background-color: ${({ theme }) => theme.iconBackgoundColor}; 
+  color: ${({ theme }) => theme.iconColor};
 
   :hover {
     cursor: pointer;
@@ -56,7 +57,7 @@ export const Hover = styled.div`
 `
 
 export const StyledIcon = styled.div`
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.iconColor};
 `
 
 const EmptyCard = styled.div`
@@ -65,7 +66,7 @@ const EmptyCard = styled.div`
   justify-content: center;
   height: 200px;
   border-radius: 20px;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.iconColor};
   height: ${({ height }) => height && height};
 `
 
@@ -95,7 +96,7 @@ export const SubNavEl = styled.li`
 
   :hover {
     cursor: pointer;
-    border-bottom: 1px solid ${({ theme }) => theme.bg3};
+    border-bottom: 1px solid ${({ theme }) => theme.liHoverColor};
   }
 `
 

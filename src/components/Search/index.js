@@ -38,22 +38,22 @@ const Wrapper = styled.div`
   justify-content: flex-end;
   padding: 12px 16px;
   border-radius: 12px;
-  background: ${({ theme, small, open }) => (small ? (open ? theme.bg6 : 'none') : transparentize(0.4, theme.bg6))};
+  background: ${({ theme, small, open }) => (small ? (open ? theme.searchBackgroundColor : 'none') : transparentize(0.4, theme.searchBackgroundColor))};
   border-bottom-right-radius: ${({ open }) => (open ? '0px' : '12px')};
   border-bottom-left-radius: ${({ open }) => (open ? '0px' : '12px')};
   z-index: 9999;
   width: 100%;
   min-width: 300px;
   box-sizing: border-box;
-  box-shadow: ${({ open, small }) =>
+  box-shadow: ${({ open, small, theme }) =>
     !open && !small
-      ? '0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) '
+      ? theme.boxShadow
       : 'none'};
   @media screen and (max-width: 500px) {
-    background: ${({ theme }) => theme.bg6};
-    box-shadow: ${({ open }) =>
+    background: ${({ theme }) => theme.searchBackgroundColor};
+    box-shadow: ${({ open, theme }) =>
     !open
-      ? '0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) '
+      ? theme.boxShadow
       : 'none'};
   }
 `
@@ -66,9 +66,9 @@ const Input = styled.input`
   border: none;
   outline: none;
   width: 100%;
-  color: ${({ theme }) => theme.text1};
+  color: ${({ theme }) => theme.searchText};
   font-size: ${({ large }) => (large ? '20px' : '14px')};
-
+  
   ::placeholder {
     color: ${({ theme }) => theme.text3};
     font-size: 16px;
@@ -113,7 +113,7 @@ const Menu = styled.div`
   overflow: auto;
   left: 0;
   padding-bottom: 20px;
-  background: ${({ theme }) => theme.bg6};
+  background: ${({ theme }) => theme.searchMenuBackgroundColor};
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
@@ -129,7 +129,7 @@ const MenuItem = styled(Row)`
   }
   :hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg2};
+    background-color: ${({ theme }) => theme.searchMenuItemHover};
   }
 `
 
@@ -454,7 +454,7 @@ export const Search = ({ small = false }) => {
         <div>
           {filteredPairList && Object.keys(filteredPairList).length === 0 && (
             <MenuItem>
-              <TYPE.body>No results</TYPE.body>
+              <TYPE.search>No results</TYPE.search>
             </MenuItem>
           )}
           {filteredPairList &&
@@ -465,9 +465,9 @@ export const Search = ({ small = false }) => {
                 <BasicLink to={'/pair/' + pair.id} key={pair.id} onClick={onDismiss}>
                   <MenuItem>
                     <DoubleTokenLogo a0={pair?.token0?.id} a1={pair?.token1?.id} margin={true} />
-                    <TYPE.body style={{ marginLeft: '10px' }}>
+                    <TYPE.search style={{ marginLeft: '10px' }}>
                       {pair.token0.symbol + '-' + pair.token1.symbol} Pair
-                    </TYPE.body>
+                    </TYPE.search>
                   </MenuItem>
                 </BasicLink>
               )
@@ -490,7 +490,7 @@ export const Search = ({ small = false }) => {
         <div>
           {Object.keys(filteredTokenList).length === 0 && (
             <MenuItem>
-              <TYPE.body>No results</TYPE.body>
+              <TYPE.search>No results</TYPE.search>
             </MenuItem>
           )}
           {filteredTokenList.slice(0, tokensShown).map((token) => {

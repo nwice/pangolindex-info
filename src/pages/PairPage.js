@@ -111,7 +111,7 @@ const WarningIcon = styled(AlertCircle)`
 `
 
 const WarningGrouping = styled.div`
-  opacity: ${({ disabled }) => disabled && '0.4'};
+  opacity: ${({ disabled }) => disabled && '0.6'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
 `
 
@@ -323,7 +323,7 @@ function PairPage({ pairAddress, history }) {
                 <Panel style={{ height: '100%' }}>
                   <AutoColumn gap="20px">
                     <RowBetween>
-                      <TYPE.main>Total Liquidity </TYPE.main>
+                      <TYPE.main>Total Liquidity</TYPE.main>
                       <div />
                     </RowBetween>
                     <RowBetween align="flex-end">

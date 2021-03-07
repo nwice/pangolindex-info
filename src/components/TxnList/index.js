@@ -316,7 +316,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
 
   return (
     <>
-      <DashGrid center={true} style={{ height: 'fit-content', padding: '0 0 1rem 0' }}>
+      <DashGrid center={true} style={{ height: 'fit-content', padding: '0px 1.125rem 1rem' }}>
         {below780 ? (
           <RowBetween area="txn">
             <DropdownSelect options={TXN_TYPE} active={txFilter} setActive={setTxFilter} color={color} />

@@ -433,7 +433,7 @@ const getGlobalTransactions = async () => {
   } catch (e) {
     console.log(e)
   }
-
+  console.log('txs')
   return transactions
 }
 
@@ -742,6 +742,6 @@ export function useTopLps() {
       fetchData()
     }
   })
-
+  console.log('topLps');
   return topLps
 }

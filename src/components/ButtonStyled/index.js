@@ -60,20 +60,20 @@ const ContentWrapper = styled.div`
 `
 
 export const ButtonLight = styled(Base)`
-  background-color: ${({ color, theme }) => (color ? transparentize(0.9, color) : transparentize(0.9, theme.primary1))};
-  color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.primary1)};
+  background-color: ${({ color, theme }) => (color ? transparentize(0.9, color) : transparentize(0.9, theme.buttonLightPrimary))};
+  color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.buttonLightPrimary)};
 
   min-width: fit-content;
   border-radius: 12px;
   white-space: nowrap;
 
   a {
-    color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.primary1)};
+    color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.buttonLightPrimary)};
   }
 
   :hover {
     background-color: ${({ color, theme }) =>
-      color ? transparentize(0.8, color) : transparentize(0.8, theme.primary1)};
+    color ? transparentize(0.8, color) : transparentize(0.8, theme.buttonLightPrimary)};
   }
 `
 
@@ -87,24 +87,24 @@ export function ButtonDropdown({ disabled = false, children, open, ...rest }) {
             <ChevronUp size={24} />
           </StyledIcon>
         ) : (
-          <StyledIcon>
-            <ChevronDown size={24} />
-          </StyledIcon>
-        )}
+            <StyledIcon>
+              <ChevronDown size={24} />
+            </StyledIcon>
+          )}
       </RowBetween>
     </ButtonFaded>
   )
 }
 
 export const ButtonDark = styled(Base)`
-  background-color: ${({ color, theme }) => (color ? color : theme.primary1)};
+  background-color: ${({ color, theme }) => (color ? color : theme.buttonLightPrimary)};
   color: white;
   width: fit-content;
   border-radius: 12px;
   white-space: nowrap;
 
   :hover {
-    background-color: ${({ color, theme }) => (color ? darken(0.1, color) : darken(0.1, theme.primary1))};
+    background-color: ${({ color, theme }) => (color ? darken(0.1, color) : darken(0.1, theme.buttonLightPrimary))};
   }
 `
 

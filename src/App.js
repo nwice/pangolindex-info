@@ -10,9 +10,10 @@ import { useGlobalData, useGlobalChartData } from './contexts/GlobalData'
 import { isAddress } from './utils'
 import AccountPage from './pages/AccountPage'
 import AllTokensPage from './pages/AllTokensPage'
+
 import AllPairsPage from './pages/AllPairsPage'
 import PinnedData from './components/PinnedData'
-
+import AllTxsPage from './pages/AllTxsPage'
 import SideNav from './components/SideNav'
 import AccountLookup from './pages/AccountLookup'
 import { PAIR_BLACKLIST } from './constants'
@@ -48,7 +49,7 @@ const Right = styled.div`
   width: ${({ open }) => (open ? '220px' : '64px')};
   height: ${({ open }) => (open ? 'fit-content' : '64px')};
   overflow: auto;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.rightNavBackgroudColor};
   @media screen and (max-width: 1400px) {
     display: none;
   }
@@ -58,7 +59,7 @@ const Center = styled.div`
   height: 100%;
   z-index: 9999;
   transition: width 0.25s ease;
-  background-color: ${({ theme }) => theme.onlyLight};
+  background-color: ${({ theme }) => theme.centerBackgroundColor};
 `
 
 const WarningWrapper = styled.div`
@@ -96,7 +97,7 @@ const LayoutWrapper = ({ children, savedOpen, setSavedOpen }) => {
 const BLOCK_DIFFERENCE_THRESHOLD = 30
 
 function App() {
-  const [savedOpen, setSavedOpen] = useState(false)
+  const [savedOpen, setSavedOpen] = useState(true)
 
   const globalData = useGlobalData()
   const globalChartData = useGlobalChartData()
@@ -115,7 +116,7 @@ function App() {
             </WarningBanner>
           </WarningWrapper>
         )}
-        {globalData &&
+        {false && globalData &&
           Object.keys(globalData).length > 0 &&
           globalChartData &&
           Object.keys(globalChartData).length > 0 ? (
@@ -189,6 +190,12 @@ function App() {
                 <Route path="/pairs">
                   <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
                     <AllPairsPage />
+                  </LayoutWrapper>
+                </Route>
+
+                <Route path="/txs">
+                  <LayoutWrapper savedOpen={savedOpen} setSavedOpen={setSavedOpen}>
+                    <AllTxsPage />
                   </LayoutWrapper>
                 </Route>
 

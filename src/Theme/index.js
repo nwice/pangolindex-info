@@ -4,80 +4,66 @@ import { useDarkModeManager } from '../contexts/LocalStorage'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 
+let avaxWalletPurple = '#4c2e56';
+let pangoOrange = '#ff6b00';
+
 export default function ThemeProvider({ children }) {
-  console.log('YOYOYOYOY');
   const [darkMode] = useDarkModeManager()
-  let wtf = theme(darkMode, '#ff6b00');
-  console.log('wtf:', wtf.customColor);
-  return <StyledComponentsThemeProvider theme={wtf}>{children}</StyledComponentsThemeProvider>
+  return <StyledComponentsThemeProvider theme={theme(darkMode, pangoOrange)}>{children}</StyledComponentsThemeProvider>
 }
 
-let pangorange = '#ff6b00';
-
 const theme = (darkMode, color) => ({
+
   customColor: color,
-  textColor: darkMode ? color : 'black',
+  iconColor: darkMode ? color : color,
+  checkboxColor: darkMode ? color : color,
 
-  //panelColor: darkMode ? 'rgba(255, 255, 255, 0)' : 'rgba(255, 255, 255, 0)',
-  //backgroundColor: darkMode ? '#212429' : '#F7F8FA',
-  backgroundColor: darkMode ? '#333300' : '#FFFFE0',
+  sideNavBackgroundColor: darkMode ? 'black' : 'transparent',
+  sideNavBackgroundTransparency: 0,
+  sideNavColor: color,
+  sideNavLinkColor: darkMode ? 'white' : 'black',
+  sideNavPollingDotColor: 'green',
+  sideNavPollingColor: darkMode ? 'white' : 'black',
+  sideNavToggleColor: darkMode ? 'white' : 'black',
 
-  //uniswapPink: darkMode ? '#ff6b00' : 'black', 
+  searchColor: darkMode ? 'black' : 'transparent',
+  searchBackgroundColor: darkMode ? 'black' : 'white',
 
-  //concreteGray: darkMode ? '#292C2F' : '#FAFAFA',
-  //inputBackground: darkMode ? '#1F1F1F' : '#FAFAFA',
-  //shadowColor: darkMode ? '#000' : '#2F80ED',
-  //mercuryGray: darkMode ? '#333333' : '#E1E1E1',
+  link: darkMode ? color : color,
 
-  text1: darkMode ? '#FAFAFA' : '#1F1F1F',
-  //text2: darkMode ? '#C3C5CB' : '#565A69',
-  //text3: darkMode ? '#6C7284' : '#888D9B',
-  //text4: darkMode ? '#565A69' : '#C3C5CB',
-  //text5: darkMode ? '#2C2F36' : '#EDEEF2',
+  normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  searchText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  inputText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  largerText: darkMode ? '#6C7284' : '#888D9B',
 
-  // special case text types
-  white: '#FFFFFF',
-  // backgrounds / greys
-  bg1: darkMode ? '#212429' : '#FAFAFA', // Sidenav PinnedData
+  popoverColor: darkMode ? 'blue' : 'pink',
+  popoverBackgroundColor: darkMode ? 'blue' : 'pink',
+  popoverBackgroundBorderColor: darkMode ? 'blue' : 'pink',
+  popoverBoxShadowColor: darkMode ? 'blue' : 'pink',
 
-  bg2: darkMode ? '#2C2F36' : '#F7F8FA', // Popover
-  bg3: darkMode ? '#40444F' : '#EDEEF2', // Popover Border
-  //bg4: darkMode ? '#565A69' : '#CED0D9',
-  //bg5: darkMode ? '#565A69' : '#888D9B',
-  bg6: darkMode ? '#000' : '#FFFFFF', // Search
+  centerBackgroundColor: darkMode ? '#22242a' : 'transparent',
 
-  //rgba(255, 107, 0, 0.3)
+  searchMenuBackgroundColor: darkMode ? 'white' : 'white',
+  searchMenuItemHover: 'blue',
 
-  //specialty colors
-  //modalBG: darkMode ? 'rgba(0,0,0,0.85)' : 'rgba(0,0,0,0.6)',
-  //advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.4)',
-  //onlyLight: darkMode ? '#22242a' : 'transparent',
-  //divider: darkMode ? 'rgba(43, 43, 43, 0.435)' : 'rgba(43, 43, 43, 0.035)',
+  pinnedBorderColor: darkMode ? 'yellow' : 'yellow',
+  pinnedBackgroundColor: darkMode ? 'black' : 'transparent',
+  pinnedColor: darkMode ? 'white' : 'black',
 
-  //primary colors
-  primary1: darkMode ? pangorange : pangorange, // ButtonStyled
-  //primary2: darkMode ? '#3680E7' : '#FF6B00',
-  //primary3: darkMode ? '#4D8FEA' : '#FF6B00',
-  //primary4: darkMode ? '#376bad70' : '#FF6B00',
-  //primary5: darkMode ? '#153d6f70' : '#FF6B00',
+  buttonLightPrimary: darkMode ? 'yellow' : 'yellow',
+  arrowColor: darkMode ? 'yellow' : 'gold',
 
-  // color text
-  //primaryText1: darkMode ? '#6da8ff' : '#FF6B00',
+  divider: darkMode ? 'yellow' : 'brown',
+  liHoverColor: darkMode ? 'yellow' : 'purple',
+  iconColor: darkMode ? 'yellow' : color,
 
-  // secondary colors
-  //secondary1: darkMode ? '#2172E5' : '#ff007a',
-  //secondary2: darkMode ? '#17000b26' : '#F6DDE8',
-  //secondary3: darkMode ? '#17000b26' : '#FDEAF1',
+  flyoutBackgroundColor: darkMode ? 'yellow' : 'green',
+  menuRowBackgroundColor: darkMode ? 'yellow' : 'green',
+  warningBackgroundColor: darkMode ? 'red' : 'red',
 
-  //shadow1: darkMode ? '#000' : '#2F80ED', // Popover Box Shadow
-  shadow1: darkMode ? 'red' : 'red', // Popover Box Shadow
+  boxShadow: '0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) '
 
-  green1: '#27AE60',
-
-  //link: '#2172E5',
-  link: darkMode ? pangorange : pangorange,
-
-  background: darkMode ? 'black' : `radial-gradient(50% 50% at 50% 50%, #ff6B00 0%, #fff 0%)`,
 })
 
 const TextWrapper = styled(Text)`
@@ -90,7 +76,15 @@ export const TYPE = {
   },
 
   body(props) {
-    return <TextWrapper fontWeight={400} fontSize={14} color={'text1'} {...props} />
+    return <TextWrapper fontWeight={400} fontSize={14} color={'popoverColor'} {...props} />
+  },
+
+  popover(props) {
+    return <TextWrapper fontWeight={400} fontSize={14} color={'popoverColor'} {...props} />
+  },
+
+  search(props) {
+    return <TextWrapper fontWeight={400} fontSize={14} color={'searchText'} {...props} />
   },
 
   small(props) {
@@ -126,7 +120,7 @@ export const Link = styled.a.attrs({
 })`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.linkDk};
   font-weight: 500;
   :hover {
     text-decoration: underline;

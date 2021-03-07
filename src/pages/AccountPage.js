@@ -41,7 +41,7 @@ const DashboardWrapper = styled.div`
 const DropdownWrapper = styled.div`
   position: relative;
   margin-bottom: 1rem;
-  border: 1px solid #edeef2;
+  border: 1px solid green;
   border-radius: 12px;
 `
 
@@ -50,7 +50,7 @@ const Flyout = styled.div`
   top: 38px;
   left: -1px;
   width: 100%;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.flyoutBackgroundColor};
   z-index: 999;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -66,7 +66,7 @@ const MenuRow = styled(Row)`
 
   :hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg2};
+    background-color: ${({ theme }) => theme.menuRowBackgroundColor};
   }
 `
 
@@ -80,7 +80,7 @@ const PanelWrapper = styled.div`
 `
 
 const Warning = styled.div`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.warningBackgroundColor};
   color: ${({ theme }) => theme.text1};
   padding: 1rem;
   font-weight: 600;
@@ -168,13 +168,13 @@ function AccountPage({ account }) {
     <PageWrapper>
       <ContentWrapper>
         <RowBetween>
-          <TYPE.body>
+          <TYPE.popover>
             <BasicLink to="/accounts">{'Accounts '}</BasicLink>→{' '}
             <Link lineHeight={'145.23%'} href={'https://cchain.explorer.avax.network/address/' + account} target="_blank">
               {' '}
               {account?.slice(0, 42)}{' '}
             </Link>
-          </TYPE.body>
+          </TYPE.popover>
           {!below600 && <Search small={true} />}
         </RowBetween>
         <Header>
@@ -182,7 +182,7 @@ function AccountPage({ account }) {
             <span>
               <TYPE.header fontSize={24}>{account?.slice(0, 6) + '...' + account?.slice(38, 42)}</TYPE.header>
               <Link lineHeight={'145.23%'} href={'https://cchain.explorer.avax.network/address/' + account} target="_blank">
-                <TYPE.main fontSize={14}>View on Avalanche</TYPE.main>
+                <TYPE.main fontSize={14}>View on the C-Chain Explorer</TYPE.main>
               </Link>
             </span>
             <AccountWrapper>
@@ -205,15 +205,15 @@ function AccountPage({ account }) {
                     <StyledIcon>
                       <Activity size={16} />
                     </StyledIcon>
-                    <TYPE.body ml={'10px'}>All Positions</TYPE.body>
+                    <TYPE.popover ml={'10px'}>All 3 Positions</TYPE.popover>
                   </RowFixed>
                 )}
                 {activePosition && (
                   <RowFixed>
                     <DoubleTokenLogo a0={activePosition.pair.token0.id} a1={activePosition.pair.token1.id} size={16} />
-                    <TYPE.body ml={'16px'}>
+                    <TYPE.popover ml={'16px'}>
                       {activePosition.pair.token0.symbol}-{activePosition.pair.token1.symbol} Position
-                    </TYPE.body>
+                    </TYPE.popover>
                   </RowFixed>
                 )}
               </ButtonDropdown>
@@ -237,9 +237,9 @@ function AccountPage({ account }) {
                             key={i}
                           >
                             <DoubleTokenLogo a0={p.pair.token0.id} a1={p.pair.token1.id} size={16} />
-                            <TYPE.body ml={'16px'}>
+                            <TYPE.popover ml={'16px'}>
                               {p.pair.token0.symbol}-{p.pair.token1.symbol} Position
-                            </TYPE.body>
+                            </TYPE.popover>
                           </MenuRow>
                         )
                       )
@@ -255,7 +255,7 @@ function AccountPage({ account }) {
                           <StyledIcon>
                             <Activity size={16} />
                           </StyledIcon>
-                          <TYPE.body ml={'10px'}>All Positions</TYPE.body>
+                          <TYPE.popover ml={'10px'}>All 2 Positions</TYPE.popover>
                         </RowFixed>
                       </MenuRow>
                     )}
@@ -269,7 +269,7 @@ function AccountPage({ account }) {
               <AutoRow gap="20px">
                 <AutoColumn gap="10px">
                   <RowBetween>
-                    <TYPE.body>Liquidity (Including Fees)</TYPE.body>
+                    <TYPE.popover>Liquidity (Including Fees)</TYPE.popover>
                     <div />
                   </RowBetween>
                   <RowFixed align="flex-end">
@@ -284,7 +284,7 @@ function AccountPage({ account }) {
                 </AutoColumn>
                 <AutoColumn gap="10px">
                   <RowBetween>
-                    <TYPE.body>Fees Earned (Cumulative)</TYPE.body>
+                    <TYPE.popover>Fees Earned (Cumulative)</TYPE.popover>
                     <div />
                   </RowBetween>
                   <RowFixed align="flex-end">

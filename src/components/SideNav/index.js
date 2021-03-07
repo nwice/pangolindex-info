@@ -7,30 +7,42 @@ import { useMedia } from 'react-use'
 import { transparentize } from 'polished'
 import { TYPE } from '../../Theme'
 import { withRouter } from 'react-router-dom'
-import { TrendingUp, List, PieChart, Disc } from 'react-feather'
+import { TrendingUp, List, PieChart, Disc, Activity } from 'react-feather'
 import Link from '../Link'
 
-import Twitter from '../../assets/twitter.svg'
+import TwitterLogo from '../../assets/twitter.svg'
+import MediumLogo from '../../assets/medium.svg'
 import AvaxLogo from '../../assets/avax_red_logo.png'
-import PngLogo from '../../assets/pango_white.svg'
-import DiscordLogo from '../../assets/discord.svg'
-import TelegramLogo from '../../assets/telegram_logo.svg'
+
+import AvaxWalletLogo from '../../assets/avax_wallet.svg'
+import AvaxWalletLogoDk from '../../assets/avax_wallet_purple.svg'
+
+import ChromeLogo from '../../assets/chrome.svg'
+import AndroidLogo from '../../assets/android.svg'
+
+import AppleLogo from '../../assets/apple_black.svg'
+import AppleLogoDk from '../../assets/apple.svg'
+
+import DiscordLogo from '../../assets/discord_black.svg'
+import DiscordLogoDk from '../../assets/discord.svg'
+
+import TelegramLogo from '../../assets/telegram.svg'
 import { useSessionStart } from '../../contexts/Application'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import Toggle from '../Toggle'
 
 const Wrapper = styled.div`
   height: ${({ isMobile }) => (isMobile ? 'initial' : '100vh')};
-  background-color: ${({ theme }) => transparentize(0.4, theme.bg1)};
-  color: ${({ theme }) => theme.text1};
+  background-color: ${({ theme }) => transparentize(theme.sideNavBackgroundTransparency, theme.sideNavBackgroundColor)};
+  color: ${({ theme }) => theme.sideNavColor};
   padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   position: sticky;
   top: 0px;
   z-index: 9999;
   box-sizing: border-box;
+  
   /* background-color: #1b1c22; */
-  background: linear-gradient(193.68deg, #1b1c22 0.68%, #000000 100.48%);
-  color: ${({ theme }) => theme.bg2};
+  /* background: linear-gradient(193.68deg, #1b1c22 0.68%, #000000 100.48%); */
 
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
@@ -45,12 +57,15 @@ const Wrapper = styled.div`
 const Option = styled.div`
   font-weight: 500;
   font-size: 14px;
-  opacity: ${({ activeText }) => (activeText ? 1 : 0.6)};
-  color: ${({ theme }) => theme.white};
+  opacity: ${({ activeText }) => (activeText ? 1 : 0.66)};
+  color: ${({ theme }) => theme.sideNavLinkColor};
   display: flex;
   :hover {
     opacity: 1;
   }
+  svg {
+    color: ${({ theme }) => theme.iconColor}
+  }  
 `
 
 const DesktopWrapper = styled.div`
@@ -77,7 +92,7 @@ const HeaderText = styled.div`
     opacity: 1;
   }
   a {
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.sideNavLinkColor};
   }
 `
 
@@ -87,8 +102,8 @@ const Polling = styled.div`
   left: 0;
   bottom: 0;
   padding: 1rem;
-  color: white;
-  opacity: 0.4;
+  color: ${({ theme }) => theme.sideNavLinkColor};
+  opacity: 0.67;
   transition: opacity 0.25s ease;
   :hover {
     opacity: 1;
@@ -102,7 +117,7 @@ const PollingDot = styled.div`
   margin-right: 0.5rem;
   margin-top: 3px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.green1};
+  background-color: ${({ theme }) => theme.sideNavPollingDotColor};
 `
 
 function SideNav({ history }) {
@@ -113,6 +128,10 @@ function SideNav({ history }) {
   const seconds = useSessionStart()
 
   const [isDark, toggleDarkMode] = useDarkModeManager()
+
+  const appleLogo = isDark ? AppleLogoDk : AppleLogo
+  const discordLogo = isDark ? DiscordLogoDk : DiscordLogo
+  const avaxWalletLogo = isDark ? AvaxWalletLogoDk : AvaxWalletLogo
 
   return (
     <Wrapper isMobile={below1080}>
@@ -152,6 +171,18 @@ function SideNav({ history }) {
                     Pairs
                   </Option>
                 </BasicLink>
+                <BasicLink to="/txs">
+                  <Option
+                    activeText={
+                      (history.location.pathname.split('/')[1] === 'txs' ||
+                        history.location.pathname.split('/')[1] === 'tx') ??
+                      undefined
+                    }
+                  >
+                    <Activity size={20} style={{ marginRight: '.75rem' }} />
+                    Transactions
+                  </Option>
+                </BasicLink>
 
                 <BasicLink to="/accounts">
                   <Option
@@ -169,38 +200,48 @@ function SideNav({ history }) {
             )}
           </AutoColumn>
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
-            <HeaderText>
+            <MobileWrapper>
               <Link href="https://app.pangolin.exchange" target="_blank">
-                <img width={'24px'} src={PngLogo} alt="Pangolindex" /> App
+                <img width={'24px'} src={ChromeLogo} alt="Pangolindex" />
               </Link>
-            </HeaderText>
+              <Link href="https://app.pangolin.exchange" target="_blank" disabled="disabled">
+                <img width={'24px'} src={AndroidLogo} alt="Pangolindex" />
+              </Link>
+              <Link href="https://app.pangolin.exchange" target="_blank" disabled="disabled">
+                <img width={'24px'} src={appleLogo} alt="Apple Play Store" />
+              </Link>
+            </MobileWrapper>
             <HeaderText>
               <Link href="https://discord.gg/PARrDYYbfw" target="_blank">
-                <img width={'24px'} src={DiscordLogo} alt="Discord" />
+                <img width={'24px'} src={discordLogo} alt="Discord" />
               </Link>
             </HeaderText>
-            <HeaderText>
+            <MobileWrapper>
               <Link href="https://twitter.com/pangolindex" target="_blank">
-                <img width={'24px'} src={Twitter} alt="Twitter" />
+                <img width={'24px'} src={TwitterLogo} alt="Twitter" />
               </Link>
-            </HeaderText>
-            <HeaderText>
-              <Link href="https://twitter.com/pangolindex" target="_blank">
+              <Link href="https://medium.com/avalancheavax" target="_blank">
+                <img width={'24px'} src={MediumLogo} alt="Twitter" />
+              </Link>
+              <Link href="https://t.me/pangolindex" target="_blank">
                 <img width={'24px'} src={TelegramLogo} alt="Twitter" />
               </Link>
-            </HeaderText>
-            <Toggle isActive={isDark} toggle={toggleDarkMode} />
-            <HeaderText>
+            </MobileWrapper>
+            <MobileWrapper>
               <Link href="https://twitter.com/avalancheavax" target="_blank">
                 <img width={'24px'} src={AvaxLogo} alt="Twitter" />
               </Link>
-            </HeaderText>
+              <Link href="https://wallet.avax.network" target="_blank">
+                <img width={'24px'} src={avaxWalletLogo} alt="Twitter" />
+              </Link>
+            </MobileWrapper>
+            <Toggle isActive={isDark} toggle={toggleDarkMode} />
           </AutoColumn>
           {!below1180 && (
             <Polling style={{ marginLeft: '.5rem' }}>
               <PollingDot />
-              <a href="/" style={{ color: 'white' }}>
-                <TYPE.small color={'white'}>
+              <a href="" style={{ color: 'white' }}>
+                <TYPE.small color={'sideNavPollingColor'}>
                   Updated {!!seconds ? seconds + 's' : '-'} ago <br />
                 </TYPE.small>
               </a>
@@ -211,8 +252,9 @@ function SideNav({ history }) {
           <MobileWrapper>
             <Title />
           </MobileWrapper>
-        )}
-    </Wrapper>
+        )
+      }
+    </Wrapper >
   )
 }
 

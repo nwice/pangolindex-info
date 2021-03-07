@@ -82,7 +82,17 @@ export default function Title() {
                 Pairs
               </Option>
             </BasicLink>
-
+            <BasicLink to="/txs">
+              <Option
+                activeText={
+                  (history.location.pathname.split('/')[1] === 'txs' ||
+                    history.location.pathname.split('/')[1] === 'tx') ??
+                  undefined
+                }
+              >
+                Txs
+              </Option>
+            </BasicLink>
             <BasicLink to="/accounts">
               <Option
                 activeText={

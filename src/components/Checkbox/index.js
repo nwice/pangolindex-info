@@ -3,11 +3,12 @@ import styled from 'styled-components'
 import { TYPE } from '../../Theme'
 import { RowFixed } from '../Row'
 
+
 const StyleCheckbox = styled.input`
-  background: ${({ theme }) => theme.bg2};
+  background: ${({ theme }) => theme.checkboxColor};
 
   :before {
-    background: #f35429;
+    background: ${({ theme }) => theme.checkboxColor};
   }
 
   :hover {

@@ -20,24 +20,6 @@ import { useEthPrice } from '../../contexts/GlobalData'
 
 dayjs.extend(utc)
 
-function sortedPair(p1, p2) {
-  if (p1 === 'PNG') {
-    return p2 + '-' + p1;
-  } else if (p1 === 'WAVAX' && p2 !== 'PNG') {
-    return p2 + '-' + p1;
-  }
-  return p1 + '-' + p2
-}
-
-function sortedTokenId(pairData, top = true) {
-  if (pairData.token0.symbol === 'PNG') {
-    return top ? pairData.token1.id : pairData.token0.id;
-  } else if (pairData.token0.symbol === 'WAVAX' && pairData.token1.symbol !== 'PNG') {
-    return top ? pairData.token1.id : pairData.token0.id;
-  }
-  return top ? pairData.token0.id : pairData.token1.id;
-}
-
 const PageButtons = styled.div`
   width: 100%;
   display: flex;
@@ -47,7 +29,7 @@ const PageButtons = styled.div`
 `
 
 const Arrow = styled.div`
-  color: ${({ theme }) => theme.primary1};
+  color: ${({ theme }) => theme.arrowColor};
   opacity: ${(props) => (props.faded ? 0.3 : 1)};
   padding: 0 20px;
   user-select: none;
@@ -228,13 +210,13 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10, useTracked = fals
             <DoubleTokenLogo
               address={pairAddress}
               size={below600 ? 16 : 20}
-              a0={sortedTokenId(pairData)}
-              a1={sortedTokenId(pairData, false)}
+              a0={pairData.token0.id}
+              a1={pairData.token1.id}
               margin={!below740}
             />
             <CustomLink style={{ marginLeft: '20px', whiteSpace: 'nowrap' }} to={'/pair/' + pairAddress} color={color}>
               <FormattedName
-                text={sortedPair(pairData.token0.symbol, pairData.token1.symbol)}
+                text={pairData.token0.symbol + '-' + pairData.token1.symbol}
                 maxCharacters={below600 ? 8 : 16}
                 adjustSize={true}
                 link={true}
