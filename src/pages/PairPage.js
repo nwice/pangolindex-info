@@ -92,6 +92,7 @@ const FixedPanel = styled(Panel)`
 
   :hover {
     cursor: pointer;
+    background-color: blue;
     background-color: ${({ theme }) => theme.bg2};
   }
 `
@@ -111,7 +112,7 @@ const WarningIcon = styled(AlertCircle)`
 `
 
 const WarningGrouping = styled.div`
-  opacity: ${({ disabled }) => disabled && '0.6'};
+  opacity: ${({ disabled }) => disabled && '0.4'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
 `
 

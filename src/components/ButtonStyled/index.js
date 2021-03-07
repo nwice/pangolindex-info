@@ -98,7 +98,7 @@ export function ButtonDropdown({ disabled = false, children, open, ...rest }) {
 
 export const ButtonDark = styled(Base)`
   background-color: ${({ color, theme }) => (color ? color : theme.buttonLightPrimary)};
-  color: white;
+  color: 'blue';
   width: fit-content;
   border-radius: 12px;
   white-space: nowrap;

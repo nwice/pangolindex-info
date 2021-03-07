@@ -58,7 +58,8 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
         }, '') ?? 'unknown error'
       throw new Error(`Token list failed validation: ${validationErrors}`)
     }
-    return json
+    console.log('tokens:', json)
+    return null;
   }
   throw new Error('Unrecognized list URL protocol.')
 }

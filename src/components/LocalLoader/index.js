@@ -27,6 +27,7 @@ const Wrapper = styled.div`
 `
 
 const AnimatedImg = styled.div`
+  margin: .3em;
   animation: ${pulse} 800ms linear infinite;
   & > * {
     width: 72px;
@@ -39,7 +40,10 @@ const LocalLoader = ({ fill }) => {
   return (
     <Wrapper fill={fill}>
       <AnimatedImg>
-        <img src={require(darkMode ? '../../assets/pango_white.svg' : '../../assets/pango.svg')} alt="loading-icon" />
+        <img src={require(darkMode ? '../../assets/avax_red_logo.png' : '../../assets/avax_red_logo.png')} alt="avax-loading-icon" />
+      </AnimatedImg>
+      <AnimatedImg>
+        <img src={require(darkMode ? '../../assets/pango_white.svg' : '../../assets/pango.svg')} alt="pangolin-loading-icon" />
       </AnimatedImg>
     </Wrapper>
   )

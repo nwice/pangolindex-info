@@ -57,8 +57,8 @@ const Wrapper = styled.div`
 const Option = styled.div`
   font-weight: 500;
   font-size: 14px;
-  opacity: ${({ activeText }) => (activeText ? 1 : 0.66)};
-  color: ${({ theme }) => theme.sideNavLinkColor};
+  opacity: ${({ activeText, theme }) => (activeText ? 1 : theme.sideNavOptionOpacity)};
+  color: ${({ theme }) => theme.sideNavOptionColor};
   display: flex;
   :hover {
     opacity: 1;
@@ -102,7 +102,7 @@ const Polling = styled.div`
   left: 0;
   bottom: 0;
   padding: 1rem;
-  color: ${({ theme }) => theme.sideNavLinkColor};
+  color: ${({ theme }) => theme.pollingColor};
   opacity: 0.67;
   transition: opacity 0.25s ease;
   :hover {
@@ -117,7 +117,7 @@ const PollingDot = styled.div`
   margin-right: 0.5rem;
   margin-top: 3px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.sideNavPollingDotColor};
+  background-color: ${({ theme }) => theme.pollingDotColor};
 `
 
 function SideNav({ history }) {
@@ -240,7 +240,7 @@ function SideNav({ history }) {
           {!below1180 && (
             <Polling style={{ marginLeft: '.5rem' }}>
               <PollingDot />
-              <a href="" style={{ color: 'white' }}>
+              <a href="">
                 <TYPE.small color={'sideNavPollingColor'}>
                   Updated {!!seconds ? seconds + 's' : '-'} ago <br />
                 </TYPE.small>

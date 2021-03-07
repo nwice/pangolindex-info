@@ -23,6 +23,7 @@ import GoogleAnalyticsReporter from './components/analytics/GoogleAnalyticsRepor
 
 const AppWrapper = styled.div`
   position: relative;
+  background-color: ${({ theme }) => theme.loadBackgroundColor};
   width: 100%;
 `
 const ContentWrapper = styled.div`
@@ -63,16 +64,16 @@ const Center = styled.div`
 `
 
 const WarningWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  `
 
 const WarningBanner = styled.div`
-  background-color: #ff6871;
+  background-color: ${({ theme }) => theme.warningBackgroundColor};
+  color: ${({ theme }) => theme.warningColor};
   padding: 1.5rem;
-  color: white;
-  width: 100%;
   text-align: center;
   font-weight: 500;
 `
@@ -116,7 +117,7 @@ function App() {
             </WarningBanner>
           </WarningWrapper>
         )}
-        {false && globalData &&
+        {globalData &&
           Object.keys(globalData).length > 0 &&
           globalChartData &&
           Object.keys(globalChartData).length > 0 ? (

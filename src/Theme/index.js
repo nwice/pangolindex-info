@@ -6,6 +6,9 @@ import { Text } from 'rebass'
 
 let avaxWalletPurple = '#4c2e56';
 let pangoOrange = '#ff6b00';
+let pangoWhite = '#ffffff'
+let pangoBlack = '#000000'
+let origWarnBanner = '#ff6871'
 
 export default function ThemeProvider({ children }) {
   const [darkMode] = useDarkModeManager()
@@ -16,15 +19,22 @@ const theme = (darkMode, color) => ({
 
   customColor: color,
   iconColor: darkMode ? color : color,
-  checkboxColor: darkMode ? color : color,
 
-  sideNavBackgroundColor: darkMode ? 'black' : 'transparent',
-  sideNavBackgroundTransparency: 0,
-  sideNavColor: color,
-  sideNavLinkColor: darkMode ? 'white' : 'black',
-  sideNavPollingDotColor: 'green',
-  sideNavPollingColor: darkMode ? 'white' : 'black',
-  sideNavToggleColor: darkMode ? 'white' : 'black',
+  loadBackgroundColor: darkMode ? pangoBlack : pangoWhite,
+  warningBackgroundColor: darkMode ? 'red' : 'red',
+  warningColor: darkMode ? pangoWhite : pangoWhite,
+
+  centerBackgroundColor: darkMode ? 'yellow' : 'white',
+
+  sideNavBackgroundColor: darkMode ? 'black' : 'black',
+  sideNavBackgroundTransparency: darkMode ? 0 : 0.85,
+
+  sideNavColor: darkMode ? color : color,
+  sideNavOptionColor: darkMode ? 'purple' : 'purple',
+  sideNavOptionOpacity: .66,
+
+  pollingDotColor: 'green',
+  pollingColor: darkMode ? 'purple' : 'black',
 
   searchColor: darkMode ? 'black' : 'transparent',
   searchBackgroundColor: darkMode ? 'black' : 'white',
@@ -42,7 +52,6 @@ const theme = (darkMode, color) => ({
   popoverBackgroundBorderColor: darkMode ? 'blue' : 'pink',
   popoverBoxShadowColor: darkMode ? 'blue' : 'pink',
 
-  centerBackgroundColor: darkMode ? '#22242a' : 'transparent',
 
   searchMenuBackgroundColor: darkMode ? 'white' : 'white',
   searchMenuItemHover: 'blue',
@@ -60,7 +69,6 @@ const theme = (darkMode, color) => ({
 
   flyoutBackgroundColor: darkMode ? 'yellow' : 'green',
   menuRowBackgroundColor: darkMode ? 'yellow' : 'green',
-  warningBackgroundColor: darkMode ? 'red' : 'red',
 
   boxShadow: '0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) '
 

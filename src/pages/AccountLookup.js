@@ -33,8 +33,6 @@ function AccountLookup() {
     <PageWrapper>
       <FullWrapper>
         <RowBetween>
-          <TYPE.largeHeader>Wallet analytics</TYPE.largeHeader>
-          {!below600 && <Search small={true} />}
         </RowBetween>
         <AccountWrapper>
           <AccountSearch />
