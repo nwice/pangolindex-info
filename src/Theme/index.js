@@ -10,62 +10,78 @@ let pangoWhite = '#ffffff'
 let pangoBlack = '#000000'
 let origWarnBanner = '#ff6871'
 
+let findme = 'pink'
+
 export default function ThemeProvider({ children }) {
   const [darkMode] = useDarkModeManager()
   return <StyledComponentsThemeProvider theme={theme(darkMode, pangoOrange)}>{children}</StyledComponentsThemeProvider>
 }
 
 const theme = (darkMode, color) => ({
+  
+  chartColor: findme,
+  chartTextColor: darkMode ? 'white' : 'black',
+  chartHorzLines: 'rgba(197, 203, 206, 0.5)',
+  chartVertLines: 'rgba(197, 203, 206, 0.5)',
+  chartHistogramColor: findme,
+
+  chartBottomColor: findme,
+  chartTopColor: findme,
+  chartLineColor: findme,
 
   customColor: color,
+  linkColor: color,
   iconColor: darkMode ? color : color,
+
+  borderRadius: '12px',
+  normalFontSize: '1rem',
+
+  priceBackgroundColor: darkMode ? pangoBlack : pangoWhite,
 
   loadBackgroundColor: darkMode ? pangoBlack : pangoWhite,
   warningBackgroundColor: darkMode ? 'red' : 'red',
   warningColor: darkMode ? pangoWhite : pangoWhite,
 
-  centerBackgroundColor: darkMode ? 'yellow' : 'white',
+  centerBackgroundColor: darkMode ? pangoBlack : pangoWhite,
 
-  sideNavBackgroundColor: darkMode ? 'black' : 'black',
+  sideNavBackgroundColor: darkMode ? pangoBlack : pangoBlack,
   sideNavBackgroundTransparency: darkMode ? 0 : 0.85,
 
   sideNavColor: darkMode ? color : color,
-  sideNavOptionColor: darkMode ? 'purple' : 'purple',
-  sideNavOptionOpacity: .66,
+  sideNavOptionColor: darkMode ? pangoWhite : pangoBlack,
+  sideNavOptionOpacity: .75,
 
   pollingDotColor: 'green',
-  pollingColor: darkMode ? 'purple' : 'black',
+  pollingColor: darkMode ?  pangoWhite : pangoBlack,
 
   searchColor: darkMode ? 'black' : 'transparent',
   searchBackgroundColor: darkMode ? 'black' : 'white',
 
   link: darkMode ? color : color,
 
-  normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
-  normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
-  searchText: darkMode ? '#FAFAFA' : '#1F1F1F',
-  inputText: darkMode ? '#FAFAFA' : '#1F1F1F',
-  largerText: darkMode ? '#6C7284' : '#888D9B',
+  //normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  //normalText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  //searchText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  //inputText: darkMode ? '#FAFAFA' : '#1F1F1F',
+  //largerText: darkMode ? '#6C7284' : '#888D9B',
 
-  popoverColor: darkMode ? 'blue' : 'pink',
-  popoverBackgroundColor: darkMode ? 'blue' : 'pink',
-  popoverBackgroundBorderColor: darkMode ? 'blue' : 'pink',
-  popoverBoxShadowColor: darkMode ? 'blue' : 'pink',
+  popoverColor: darkMode ? findme : findme,
+  popoverBackgroundColor: darkMode ? findme : findme,
+  popoverBackgroundBorderColor: darkMode ? findme : findme,
+  popoverBoxShadowColor: darkMode ? findme : findme,
 
+  searchMenuBackgroundColor: darkMode ? findme : findme,
+  searchMenuItemHover: findme,
 
-  searchMenuBackgroundColor: darkMode ? 'white' : 'white',
-  searchMenuItemHover: 'blue',
+  pinnedBorderColor: darkMode ? findme : findme,
+  pinnedBackgroundColor: darkMode ? findme : findme,
+  pinnedColor: darkMode ? findme : findme,
 
-  pinnedBorderColor: darkMode ? 'yellow' : 'yellow',
-  pinnedBackgroundColor: darkMode ? 'black' : 'transparent',
-  pinnedColor: darkMode ? 'white' : 'black',
+  buttonLightPrimary: darkMode ? findme : findme,
+  arrowColor: darkMode ? findme : findme,
 
-  buttonLightPrimary: darkMode ? 'yellow' : 'yellow',
-  arrowColor: darkMode ? 'yellow' : 'gold',
-
-  divider: darkMode ? 'yellow' : 'brown',
-  liHoverColor: darkMode ? 'yellow' : 'purple',
-  iconColor: darkMode ? 'yellow' : color,
+  divider: darkMode ? findme: 'brown',
+  liHoverColor: darkMode ? findme : findme,
 
   flyoutBackgroundColor: darkMode ? 'yellow' : 'green',
   menuRowBackgroundColor: darkMode ? 'yellow' : 'green',

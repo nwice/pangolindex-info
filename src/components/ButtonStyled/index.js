@@ -8,9 +8,9 @@ import { StyledIcon } from '..'
 
 const Base = styled(RebassButton)`
   padding: 8px 12px;
-  font-size: 0.825rem;
-  font-weight: 600;
-  border-radius: 12px;
+  font-size: ${({ theme }) => theme.normalFontSize};
+  font-weight: ${({ theme }) => theme.normalFontWeight};
+  border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
   outline: none;
   border: 1px solid transparent;
@@ -21,30 +21,29 @@ const Base = styled(RebassButton)`
 
 const BaseCustom = styled(RebassButton)`
   padding: 16px 12px;
-  font-size: 0.825rem;
-  font-weight: 400;
-  border-radius: 12px;
+  font-size: ${({ theme }) => theme.normalFontSize};
+  font-weight: ${({ theme }) => theme.normalFontWeight - 200};
+  border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
   outline: none;
 `
 
 const Dull = styled(Base)`
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: black;
+  background-color: ${({ theme }) => theme.dullBackgroundTransparentColor};
+  border: ${({ theme }) => '1px solid ' + theme.dullBorderColor};
+  color: ${({ theme }) => theme.dullColor};
   height: 100%;
   font-weight: 400;
-  &:hover,
-  :focus {
-    background-color: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.25);
+  &:hover, :focus {
+    background-color: ${({ theme }) => theme.dullBackgroundTransparentHoverColor};
+    border-color: ${({ theme }) => theme.dullHoverColor};
   }
   &:focus {
-    box-shadow: 0 0 0 1pt rgba(255, 255, 255, 0.25);
+    box-shadow: ${({ theme }) => theme.dullFocusBoxShadow};
   }
   &:active {
-    background-color: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.25);
+    background-color: ${({ theme }) => theme.dullActiveBoxShadow};
+    border-color: ${({ theme }) => theme.dullActiveBoxShadow};
   }
 `
 
@@ -60,20 +59,20 @@ const ContentWrapper = styled.div`
 `
 
 export const ButtonLight = styled(Base)`
-  background-color: ${({ color, theme }) => (color ? transparentize(0.9, color) : transparentize(0.9, theme.buttonLightPrimary))};
-  color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.buttonLightPrimary)};
+  background-color: ${({ color, theme }) => (color ? transparentize(0.9, color) : transparentize(0.9, 'yellow'))};
+  color: ${({ color, theme }) => (color ? darken(0.1, color) : 'yellow')};
 
   min-width: fit-content;
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   white-space: nowrap;
 
   a {
-    color: ${({ color, theme }) => (color ? darken(0.1, color) : theme.buttonLightPrimary)};
+    color: ${({ color, theme }) => (color ? darken(0.1, color) : 'yellow')};
   }
 
   :hover {
     background-color: ${({ color, theme }) =>
-    color ? transparentize(0.8, color) : transparentize(0.8, theme.buttonLightPrimary)};
+    color ? transparentize(0.8, color) : transparentize(0.8, 'yellow')};
   }
 `
 
@@ -97,14 +96,14 @@ export function ButtonDropdown({ disabled = false, children, open, ...rest }) {
 }
 
 export const ButtonDark = styled(Base)`
-  background-color: ${({ color, theme }) => (color ? color : theme.buttonLightPrimary)};
+  background-color: ${({ color, theme }) => (color ? color : 'yellow')};
   color: 'blue';
   width: fit-content;
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   white-space: nowrap;
 
   :hover {
-    background-color: ${({ color, theme }) => (color ? darken(0.1, color) : darken(0.1, theme.buttonLightPrimary))};
+    background-color: ${({ color, theme }) => (color ? darken(0.1, color) : darken(0.1, 'yellow'))};
   }
 `
 

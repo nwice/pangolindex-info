@@ -4,15 +4,17 @@ import { Link as RouterLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { lighten, darken } from 'polished'
-import { COLORATION } from '../../constants'
 
 const WrappedLink = ({ external, children, ...rest }) => (
   <RebassLink
     target={external ? '_blank' : null}
     rel={external ? 'noopener noreferrer' : null}
-    color={COLORATION.rebass}
+    color={({ theme }) => theme.linkColor }
+
     {...rest}
   >
+
+
     {children}
   </RebassLink>
 )
@@ -22,7 +24,7 @@ WrappedLink.propTypes = {
 }
 
 const Link = styled(WrappedLink)`
-  color: ${({ color, theme }) => (color ? color : theme.link)};
+  color: ${({ theme }) => theme.linkColor };
 `
 
 export default Link
@@ -31,17 +33,17 @@ export const CustomLink = styled(RouterLink)`
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  color: ${({ color, theme }) => (color ? color : theme.link)};
-
+  color: ${({ theme }) => theme.linkColor};
+  
   &:visited {
-    color: ${({ color, theme }) => (color ? lighten(0.1, color) : lighten(0.1, theme.link))};
+    color: ${({ theme }) => lighten(0.1, theme.linkColor)};
   }
 
   &:hover {
     cursor: pointer;
     text-decoration: none;
     underline: none;
-    color: ${({ color, theme }) => (color ? darken(0.1, color) : darken(0.1, theme.link))};
+    color: ${({ theme }) => darken(0.1, theme.linkColor)};
   }
 `
 

@@ -9,6 +9,7 @@ import { Play } from 'react-feather'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import { IconWrapper } from '..'
 import { COLORATION } from '../../constants'
+import ThemeProvider from '../../Theme'
 
 dayjs.extend(utc)
 
@@ -64,7 +65,6 @@ const TradingViewChart = ({
   const topScale = type === CHART_TYPES.AREA ? 0.32 : 0.2
 
   const [darkMode] = useDarkModeManager()
-  const textColor = darkMode ? 'white' : 'black'
   const previousTheme = usePrevious(darkMode)
 
   // reset the chart if them switches
@@ -80,7 +80,7 @@ const TradingViewChart = ({
   }, [chartCreated, darkMode, previousTheme, type])
 
   // if no chart created yet, create one with options and add to DOM manually
-  useEffect(() => {
+  useEffect((theme) => {
     if (!chartCreated && formattedData) {
       var chart = createChart(ref.current, {
         width: width,
@@ -101,11 +101,11 @@ const TradingViewChart = ({
         },
         grid: {
           horzLines: {
-            color: 'rgba(197, 203, 206, 0.5)',
+            color: theme.chartHorzLines,
             visible: false,
           },
           vertLines: {
-            color: 'rgba(197, 203, 206, 0.5)',
+            color: theme.chartVertLines,
             visible: false,
           },
         },
@@ -127,7 +127,7 @@ const TradingViewChart = ({
       var series =
         type === CHART_TYPES.BAR
           ? chart.addHistogramSeries({
-            color: COLORATION.histogramColor,
+            color: theme.chartHistogramColor,
             priceFormat: {
               type: 'volume',
             },
@@ -135,13 +135,13 @@ const TradingViewChart = ({
               top: 0.32,
               bottom: 0,
             },
-            lineColor: COLORATION.histogramLinColor,
+            lineColor: theme.chartHistogramLinColor,
             lineWidth: 3,
           })
           : chart.addAreaSeries({
-            topColor: COLORATION.chartTopColor,
-            bottomColor: COLORATION.chartBottomColor,
-            lineColor: COLORATION.chartLineColor,
+            topColor: theme.chartTopColor,
+            bottomColor: theme.chartBottomColor,
+            lineColor: theme.chartLineColor,
             lineWidth: 3,
           })
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
-import { useDarkModeManager } from '../../contexts/LocalStorage'
+
+import AvaxLogo from '../../assets/avax_red_logo.png'
+import PangoLogo from '../../assets/pango_white.svg'
 
 const pulse = keyframes`
   0% { transform: scale(1); }
@@ -35,15 +37,14 @@ const AnimatedImg = styled.div`
 `
 
 const LocalLoader = ({ fill }) => {
-  const [darkMode] = useDarkModeManager()
 
   return (
     <Wrapper fill={fill}>
       <AnimatedImg>
-        <img src={require(darkMode ? '../../assets/avax_red_logo.png' : '../../assets/avax_red_logo.png')} alt="avax-loading-icon" />
+        <img src={AvaxLogo} alt="avax-loading-icon" />
       </AnimatedImg>
       <AnimatedImg>
-        <img src={require(darkMode ? '../../assets/pango_white.svg' : '../../assets/pango.svg')} alt="pangolin-loading-icon" />
+        <img src={PangoLogo} alt="pangolin-loading-icon" />
       </AnimatedImg>
     </Wrapper>
   )

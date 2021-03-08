@@ -4,7 +4,7 @@ import { timeframeOptions } from '../../constants'
 import { useGlobalChartData, useGlobalData } from '../../contexts/GlobalData'
 import { useMedia } from 'react-use'
 import DropdownSelect from '../DropdownSelect'
-import TradingViewChart, { CHART_TYPES } from '../TradingviewChart'
+import TradingViewChart, { CHART_TYPES } from '../TradingViewChart'
 import { RowFixed } from '../Row'
 import { OptionButton } from '../ButtonStyled'
 import { getTimeframe } from '../../utils'
@@ -79,7 +79,7 @@ const GlobalChart = ({ display }) => {
   return chartDataFiltered ? (
     <>
       {below800 && (
-        <DropdownSelect options={CHART_VIEW} active={chartView} setActive={setChartView} color={({ theme }) => theme.customColor} />
+        <DropdownSelect options={CHART_VIEW} active={chartView} setActive={setChartView} color={({ theme }) => theme.chartColor} />
       )}
 
       {chartDataFiltered && chartView === CHART_VIEW.LIQUIDITY && (

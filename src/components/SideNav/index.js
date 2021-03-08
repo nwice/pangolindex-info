@@ -199,7 +199,7 @@ function SideNav({ history }) {
               </AutoColumn>
             )}
           </AutoColumn>
-          <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
+          <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem', display: 'none' }}>
             <MobileWrapper>
               <Link href="https://app.pangolin.exchange" target="_blank">
                 <img width={'24px'} src={ChromeLogo} alt="Pangolindex" />
@@ -235,6 +235,9 @@ function SideNav({ history }) {
                 <img width={'24px'} src={avaxWalletLogo} alt="Twitter" />
               </Link>
             </MobileWrapper>
+            
+          </AutoColumn>
+          <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
             <Toggle isActive={isDark} toggle={toggleDarkMode} />
           </AutoColumn>
           {!below1180 && (

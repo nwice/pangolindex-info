@@ -57,10 +57,10 @@ export default function Title() {
         </RowFixed>
         {below1080 && (
           <RowFixed style={{ alignItems: 'flex-end' }}>
-            <BasicLink to="/home">
+            <BasicLink to="home">
               <Option activeText={history.location.pathname === '/home' ?? undefined}>Overview</Option>
             </BasicLink>
-            <BasicLink to="/tokens">
+            <BasicLink to="tokens">
               <Option
                 activeText={
                   (history.location.pathname.split('/')[1] === 'tokens' ||
@@ -78,8 +78,8 @@ export default function Title() {
                     history.location.pathname.split('/')[1] === 'pair') ??
                   undefined
                 }
-              >
-                Pairs
+                >
+              Pairs
               </Option>
             </BasicLink>
             <BasicLink to="/txs">

@@ -14,7 +14,7 @@ const PriceCard = styled(Panel)`
   top: -20px;
   z-index: 9999;
   height: fit-content;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.priceBackgroundColor};
 `
 
 function formatPercent(rawPercent) {
