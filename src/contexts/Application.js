@@ -3,8 +3,6 @@ import { timeframeOptions, SUPPORTED_LIST_URLS__NO_ENS } from '../constants'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import getTokenList from '../utils/tokenLists'
-import { healthClient } from '../apollo/client'
-import { SUBGRAPH_HEALTH } from '../apollo/queries'
 dayjs.extend(utc)
 
 const UPDATE = 'UPDATE'
@@ -133,6 +131,7 @@ export default function Provider({ children }) {
         block,
       },
     })
+    console.log('block:', block)
   }, [])
 
   const updateHeadBlock = useCallback((block) => {
@@ -167,34 +166,9 @@ export default function Provider({ children }) {
 }
 
 export function useLatestBlocks() {
-  const [state, { updateLatestBlock, updateHeadBlock }] = useApplicationContext()
-
+  const [state] = useApplicationContext()  
   const latestBlock = state?.[LATEST_BLOCK]
   const headBlock = state?.[HEAD_BLOCK]
-
-  useEffect(() => {
-    async function fetch() {
-      healthClient
-        .query({
-          query: SUBGRAPH_HEALTH,
-        })
-        .then((res) => {
-          const syncedBlock = res.data.indexingStatusForCurrentVersion.chains[0].latestBlock.number
-          const headBlock = res.data.indexingStatusForCurrentVersion.chains[0].chainHeadBlock.number
-          if (syncedBlock && headBlock) {
-            updateLatestBlock(syncedBlock)
-            updateHeadBlock(headBlock)
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    }
-    if (!latestBlock) {
-      fetch()
-    }
-  }, [latestBlock, updateHeadBlock, updateLatestBlock])
-
   return [latestBlock, headBlock]
 }
 

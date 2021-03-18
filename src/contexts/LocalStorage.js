@@ -9,10 +9,11 @@ const DISMISSED_PATHS = 'DISMISSED_PATHS'
 const SAVED_ACCOUNTS = 'SAVED_ACCOUNTS'
 const SAVED_TOKENS = 'SAVED_TOKENS'
 const SAVED_PAIRS = 'SAVED_PAIRS'
+const CHART_LOCK = 'CHART_LOCK'
 
 const DARK_MODE = 'DARK_MODE'
 
-const UPDATABLE_KEYS = [DARK_MODE, DISMISSED_PATHS, SAVED_ACCOUNTS, SAVED_PAIRS, SAVED_TOKENS]
+const UPDATABLE_KEYS = [DARK_MODE, DISMISSED_PATHS, SAVED_ACCOUNTS, SAVED_PAIRS, SAVED_TOKENS, CHART_LOCK]
 
 const UPDATE_KEY = 'UPDATE_KEY'
 
@@ -49,6 +50,7 @@ function init() {
     [SAVED_ACCOUNTS]: [],
     [SAVED_TOKENS]: {},
     [SAVED_PAIRS]: {},
+    [CHART_LOCK]: false,
   }
 
   try {
@@ -137,6 +139,15 @@ export function useSavedAccounts() {
   )
 
   return [savedAccounts, addAccount, removeAccount]
+}
+
+export function useChartLock() {
+  const [state, { updateKey }] = useLocalStorageContext()
+  const chartLock = state?.[CHART_LOCK];
+  function setChartLock(b) {
+    updateKey(CHART_LOCK, b)
+  }
+  return [chartLock, setChartLock]
 }
 
 export function useSavedPairs() {

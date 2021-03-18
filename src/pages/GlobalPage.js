@@ -67,10 +67,12 @@ function GlobalPage() {
       <ContentWrapper>
         <div>
           <AutoColumn gap="24px" style={{ paddingBottom: below800 ? '0' : '24px' }}>
-            <TYPE.largeHeader>{below800 ? 'Pango Analytics' : 'Pangolin Analytics'}</TYPE.largeHeader>
-            <Search />
+            {false && (
+              <TYPE.largeHeader>{below800 ? 'Pango Analytics' : 'Pangolin Analytics'}</TYPE.largeHeader>
+            )}
             <GlobalStats />
-          </AutoColumn>
+            <Search />           
+          </AutoColumn>        
           {below800 && ( // mobile card
             <Box mb={20}>
               <Panel>

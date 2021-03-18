@@ -33,7 +33,7 @@ const Dull = styled(Base)`
   border: ${({ theme }) => '1px solid ' + theme.dullBorderColor};
   color: ${({ theme }) => theme.dullColor};
   height: 100%;
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.normalFontWeight - 200};
   &:hover, :focus {
     background-color: ${({ theme }) => theme.dullBackgroundTransparentHoverColor};
     border-color: ${({ theme }) => theme.dullHoverColor};
@@ -108,8 +108,8 @@ export const ButtonDark = styled(Base)`
 `
 
 export const ButtonFaded = styled(Base)`
-  background-color: ${({ theme }) => theme.bg2};
-  color: (255, 255, 255, 0.5);
+  background-color: ${({ theme }) => theme.fadedButtonBackgroundColor};
+  color: ${({ theme }) => theme.fadedButtonColor};
   white-space: nowrap;
 
   :hover {
@@ -142,9 +142,9 @@ export const OptionButton = styled.div`
   white-space: nowrap;
   padding: 6px;
   border-radius: 6px;
-  border: 1px solid ${({ theme }) => theme.bg4};
-  background-color: ${({ active, theme }) => active && theme.bg3};
-  color: ${({ theme }) => theme.text1};
+  border: 1px solid ${({ theme }) => theme.optionButtonBorderColor};
+  background-color: ${({ active, theme }) => active && theme.optionButtonBackgroundColor};
+  color: ${({ theme }) => theme.optionButtonColor};
 
   :hover {
     cursor: ${({ disabled }) => !disabled && 'pointer'};

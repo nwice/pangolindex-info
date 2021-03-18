@@ -183,7 +183,6 @@ export default function Provider({ children }) {
 }
 
 async function getBulkPairData(pairList, ethPrice) {
-  console.log('pairList:', pairList);
   const [t1, t2, tWeek] = getTimestampsForChanges()
   let [{ number: b1 }, { number: b2 }, { number: bWeek }] = await getBlocksFromTimestamps([t1, t2, tWeek])
 
@@ -221,8 +220,13 @@ async function getBulkPairData(pairList, ethPrice) {
     let pairData = await Promise.all(
       current &&
       current.data.pairs.map(p => {
-        if ((p.token0.symbol === 'PNG') || (['AVAX', 'WAVAX'].indexOf(p.token0.symbol) >= 0 && p.token1.symbol !== 'PNG')) {
-          console.log('flip!', p);
+        if ( p.token0.symbol === 'WAVAX' ) {
+          p.token0.symbol = 'AVAX';
+        }
+        if ( p.token1.symbol === 'WAVAX' ) {
+          p.token1.symbol = 'AVAX';
+        }                 
+        if ((p.token0.symbol === 'PNG') || p.token1.symbol === 'AVAX') {  
           Object.assign(p, {
             token1: p.token0, token0: p.token1,
             token1Price: p.token0Price, token0Price: p.token1Price,
@@ -260,6 +264,7 @@ async function getBulkPairData(pairList, ethPrice) {
         return data
       })
     )
+    console.log('pair length:', pairData.length);
     return pairData;
   } catch (e) {
     console.log(e)

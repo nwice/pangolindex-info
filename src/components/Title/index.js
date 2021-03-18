@@ -21,7 +21,7 @@ const TitleWrapper = styled.div`
   }
 `
 
-const UniIcon = styled(Link)`
+const UniIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);

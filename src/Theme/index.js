@@ -18,6 +18,13 @@ export default function ThemeProvider({ children }) {
 }
 
 const theme = (darkMode, color) => ({
+
+  optionButtonBorderColor: findme,
+  optionButtonBackgroundColor: findme,
+  optionButtonColor: findme,
+
+  fadedButtonBackgroundColor: findme,
+  fadedButtonColor: findme,
   
   chartColor: findme,
   chartTextColor: darkMode ? 'white' : 'black',
@@ -39,7 +46,7 @@ const theme = (darkMode, color) => ({
   priceBackgroundColor: darkMode ? pangoBlack : pangoWhite,
 
   loadBackgroundColor: darkMode ? pangoBlack : pangoWhite,
-  warningBackgroundColor: darkMode ? 'red' : 'red',
+  warningBackgroundColor: darkMode ? findme : findme,
   warningColor: darkMode ? pangoWhite : pangoWhite,
 
   centerBackgroundColor: darkMode ? pangoBlack : pangoWhite,
@@ -191,7 +198,7 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     font-size: 14px;    
-    background-color: ${({ theme }) => theme.bg6};
+    background-color: ${({ theme }) => theme.siteBackgroundColor};
   }
 
   a {

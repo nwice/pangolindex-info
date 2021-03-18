@@ -207,6 +207,7 @@ function App() {
                 </Route>
 
                 <Redirect to="/home" />
+                
               </Switch>
             </BrowserRouter>
           ) : (

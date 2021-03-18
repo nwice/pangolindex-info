@@ -31,6 +31,8 @@ const UPDATE_ALL_PAIRS_IN_UNISWAP = 'UPDAUPDATE_ALL_PAIRS_IN_UNISWAPTE_TOP_PAIRS
 const UPDATE_ALL_TOKENS_IN_UNISWAP = 'UPDATE_ALL_TOKENS_IN_UNISWAP'
 const UPDATE_TOP_LPS = 'UPDATE_TOP_LPS'
 
+// 306160
+
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
 dayjs.extend(weekOfYear)
@@ -294,11 +296,14 @@ async function getGlobalData(ethPrice, oldEthPrice) {
         oneDayData.totalLiquidityETH * oldEthPrice
       )
 
+      
       // add relevant fields with the calculated amounts
-      data.oneDayVolumeUSD = oneDayVolumeUSD
+      
+      data.oneDayVolumeUSD = oneDayVolumeUSD * ethPrice
+      data.volumeChangeUSD = volumeChangeUSD
+      
       data.oneWeekVolume = oneWeekVolume
       data.weeklyVolumeChange = weeklyVolumeChange
-      data.volumeChangeUSD = volumeChangeUSD
       data.liquidityChangeUSD = liquidityChangeUSD
       data.oneDayTxns = oneDayTxns
       data.txnChange = txnChange
@@ -316,6 +321,7 @@ async function getGlobalData(ethPrice, oldEthPrice) {
  * @param {*} oldestDateToFetch // start of window to fetch from
  */
 const getChartData = async (oldestDateToFetch) => {
+  console.log('getChartData!');
   let data = []
   let weeklyData = []
   const utcEndTime = dayjs.utc()
@@ -324,6 +330,7 @@ const getChartData = async (oldestDateToFetch) => {
 
   try {
     while (!allFound) {
+      //console.log('get chart data:', GLOBAL_CHART);
       let result = await client.query({
         query: GLOBAL_CHART,
         variables: {
@@ -337,41 +344,50 @@ const getChartData = async (oldestDateToFetch) => {
       if (result.data.pangolinDayDatas.length < 1000) {
         allFound = true
       }
-    }
+    }          
 
     if (data) {
       let dayIndexSet = new Set()
       let dayIndexArray = []
       const oneDay = 24 * 60 * 60
 
+      let price_history = (await getCoinGeckoHistory()).prices.map(p => { 
+        return { day: ( p[0] / 1000 / oneDay).toFixed(0), price: p[1]}
+      });
+
       // for each day, parse the daily volume and format for chart array
       data.forEach((dayData, i) => {
         // add the day index to the set of days
-        dayIndexSet.add((data[i].date / oneDay).toFixed(0))
-        dayIndexArray.push(data[i])
-        dayData.dailyVolumeUSD = parseFloat(dayData.dailyVolumeUSD)
+        let d = (data[i].date / oneDay).toFixed(0)
+        //dayIndexSet.add(d)
+        //dayIndexArray.push(data[i])
+        let p = price_history.filter(h => { return h.day === d })?.[0]?.price || 0;
+        dayData.dailyVolumeUSD = parseFloat(dayData.dailyVolumeUSD) * p;
+        dayData.totalLiquidityUSD = parseFloat(dayData.totalLiquidityUSD) * p;
       })
+
+      console.log('data:', data[data.length-1])
 
       // fill in empty days ( there will be no day datas if no trades made that day )
       let timestamp = data[0].date ? data[0].date : oldestDateToFetch
-      let latestLiquidityUSD = data[0].totalLiquidityUSD
-      let latestDayDats = data[0].mostLiquidTokens
+      let latestLiquidityUSD, latestDayDats;
+
       let index = 1
       while (timestamp < utcEndTime.unix() - oneDay) {
         const nextDay = timestamp + oneDay
-        let currentDayIndex = (nextDay / oneDay).toFixed(0)
-        if (!dayIndexSet.has(currentDayIndex)) {
-          data.push({
-            date: nextDay,
-            dailyVolumeUSD: 0,
-            totalLiquidityUSD: latestLiquidityUSD,
-            mostLiquidTokens: latestDayDats,
-          })
-        } else {
-          latestLiquidityUSD = dayIndexArray[index].totalLiquidityUSD
-          latestDayDats = dayIndexArray[index].mostLiquidTokens
-          index = index + 1
-        }
+        let currentDayIndex = (nextDay / oneDay).toFixed(0)    
+        //if (!dayIndexSet.has(currentDayIndex)) {
+        //  data.push({
+        //    date: nextDay,
+        //    dailyVolumeUSD: 0,
+        //    totalLiquidityUSD: latestLiquidityUSD,
+        //    mostLiquidTokens: latestDayDats,
+        //  })
+        //} else {
+        //  latestLiquidityUSD = dayIndexArray[index].totalLiquidityUSD
+        //  latestDayDats = dayIndexArray[index].mostLiquidTokens
+          index = index + 1          
+        //}
         timestamp = nextDay
       }
     }
@@ -404,6 +420,7 @@ const getGlobalTransactions = async () => {
   let transactions = {}
 
   try {
+    let [ep] = await getEthPrice();
     let result = await client.query({
       query: GLOBAL_TXNS,
       fetchPolicy: 'cache-first',
@@ -413,18 +430,23 @@ const getGlobalTransactions = async () => {
     transactions.swaps = []
     result?.data?.transactions &&
       result.data.transactions.map((transaction) => {
+
+        console.log('transaction:', transaction)
         if (transaction.mints.length > 0) {
           transaction.mints.map((mint) => {
+            mint.amountUSD = mint.amountUSD * ep;
             return transactions.mints.push(mint)
           })
         }
         if (transaction.burns.length > 0) {
           transaction.burns.map((burn) => {
+            burn.amountUSD = burn.amountUSD * ep;
             return transactions.burns.push(burn)
           })
         }
         if (transaction.swaps.length > 0) {
           transaction.swaps.map((swap) => {
+            swap.amountUSD = swap.amountUSD * ep;
             return transactions.swaps.push(swap)
           })
         }
@@ -433,45 +455,72 @@ const getGlobalTransactions = async () => {
   } catch (e) {
     console.log(e)
   }
-  console.log('txs')
+  console.log('txs size:', transactions.length)
   return transactions
+}
+
+
+let firedHistory = null;
+
+const getCoinGeckoHistory = () => {
+  if (firedHistory !== null) {
+    return firedHistory;
+  }
+  firedHistory = coinGeckoClient.coins.fetchMarketChart('avalanche-2', {
+    days: 30,
+    vs_currency: 'usd',
+    interval: 'daily'
+  }).then(result => {
+    return result.data;
+  })
+  return firedHistory;
 }
 
 /**
  * Gets the current price  of ETH, 24 hour price, and % change between them
  */
-const getEthPrice = async () => {
+
+let fired = null;
+
+const getCoinGecko = () => {
   const utcCurrentTime = dayjs()
   const utcOneDayBack = utcCurrentTime.subtract(1, 'day').startOf('minute').unix() * 1000
-
-  let result = await coinGeckoClient.simple.price({
+  if (fired !== null) {
+    return fired;
+  }
+  fired = Promise.all([coinGeckoClient.simple.price({
     ids: ['avalanche-2'],
     vs_currencies: ['usd'],
     include_24hr_change: ['true']
-  })
-
-  console.log('price result:', result);
-  let ethPrice = result['data']['avalanche-2']['usd']
-  let priceChangeETH = result['data']['avalanche-2']['usd_24h_change']
-
-  result = await coinGeckoClient.coins.fetchMarketChart('avalanche-2', {
+  }), coinGeckoClient.coins.fetchMarketChart('avalanche-2', {
     days: 1,
     vs_currency: 'usd'
-  })
-
-  let ethPriceOneDay = 0
-
-  let i
-  let snapshot
-  for (i = 0; i < result['data']['prices'].length; i++) {
-    snapshot = result['data']['prices'][i]
-    if (snapshot[0] > utcOneDayBack) {
-      ethPriceOneDay = snapshot[1]
-      break
+  }), coinGeckoClient.coins.fetchMarketChart('avalanche-2', {
+    days: 30,
+    vs_currency: 'usd',
+    interval: 'daily'
+  })]).then(result => {
+    let ethPrice = result[0]['data']['avalanche-2']['usd']
+    let priceChangeETH = result[0]['data']['avalanche-2']['usd_24h_change'] 
+    let ethPriceOneDay = 0
+    let i
+    let snapshot
+    for (i = 0; i < result[1]['data']['prices'].length; i++) {
+      snapshot = result[1]['data']['prices'][i]
+      if (snapshot[0] > utcOneDayBack) {
+        ethPriceOneDay = snapshot[1]
+        break
+      }
     }
-  }
-  let resultTriplet = [ethPrice, ethPriceOneDay, priceChangeETH];
-  console.log('result triplet:', resultTriplet);
+    let triplet = [ethPrice, ethPriceOneDay, priceChangeETH];
+    console.log('ava price triplet:', triplet);      
+    return triplet;
+  })
+  return fired;
+}
+
+const getEthPrice = async () => {
+  let resultTriplet = await getCoinGecko(); // [ethPrice, ethPriceOneDay, priceChangeETH];
   return resultTriplet;
 }
 

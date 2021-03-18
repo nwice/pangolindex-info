@@ -38,6 +38,7 @@ const GlobalChart = ({ display }) => {
     weeklyVolumeChange,
   } = useGlobalData()
 
+  dailyData[dailyData.length-1].totalLiquidityUSD = totalLiquidityUSD;
   // based on window, get starttim
   let utcStartTime = getTimeframe(timeWindow)
 
@@ -75,7 +76,6 @@ const GlobalChart = ({ display }) => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [isClient, width]) // Empty array ensures that effect is only run on mount and unmount
-
   return chartDataFiltered ? (
     <>
       {below800 && (
@@ -109,7 +109,7 @@ const GlobalChart = ({ display }) => {
           />
         </ResponsiveContainer>
       )}
-      {display === 'volume' && (
+      {display === 'volume' && false && (
         <RowFixed
           style={{
             bottom: '70px',

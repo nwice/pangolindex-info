@@ -274,12 +274,13 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
           // set data
           data.priceUSD = data?.derivedETH * ethPrice
           data.totalLiquidityUSD = currentLiquidityUSD
-          data.oneDayVolumeUSD = parseFloat(oneDayVolumeUSD)
+          data.oneDayVolumeUSD = parseFloat(oneDayVolumeUSD) * ethPrice
           data.volumeChangeUSD = volumeChangeUSD
           data.priceChangeUSD = priceChangeUSD
           data.liquidityChangeUSD = getPercentChange(currentLiquidityUSD ?? 0, oldLiquidityUSD ?? 0)
           data.oneDayTxns = oneDayTxns
           data.txnChange = txnChange
+
 
           // new tokens
           if (!oneDayHistory && data) {
@@ -397,10 +398,11 @@ const getTokenData = async (address, ethPrice, ethPriceOld) => {
     const oldLiquidityUSD = oneDayData?.totalLiquidity * ethPriceOld * oneDayData?.derivedETH
 
     // set data
+    // 
     data.priceUSD = data?.derivedETH * ethPrice
     data.totalLiquidityUSD = currentLiquidityUSD
-    data.oneDayVolumeUSD = oneDayVolumeUSD
-    data.volumeChangeUSD = volumeChangeUSD
+    data.oneDayVolumeUSD = oneDayVolumeUSD * ethPrice
+    data.volumeChangeUSD = volumeChangeUSD 
     data.priceChangeUSD = priceChangeUSD
     data.oneDayVolumeUT = oneDayVolumeUT
     data.volumeChangeUT = volumeChangeUT
@@ -522,7 +524,8 @@ const getIntervalTokenData = async (tokenAddress, startTime, interval = 3600, la
     let index = 0
     for (var brow in result) {
       let timestamp = brow.split('b')[1]
-      if (timestamp) {
+      if (timestamp && result[brow] != null) {
+        //console.log(result[brow]);
         values[index].priceUSD = result[brow].ethPrice * values[index].derivedETH
         index += 1
       }
@@ -553,24 +556,30 @@ const getTokenChartData = async (tokenAddress) => {
   let utcStartTime = utcEndTime.subtract(1, 'year')
   let startTime = utcStartTime.startOf('minute').unix() - 1
 
-  try {
+  try { 
     let allFound = false
     let skip = 0
+    console.log('step1');
     while (!allFound) {
-      let result = await client.query({
+
+      let q = {
         query: TOKEN_CHART,
         variables: {
           tokenAddr: tokenAddress,
           skip,
         },
         fetchPolicy: 'cache-first',
-      })
+      }
+      console.log('step1.1', q);
+      let result = await client.query(q)
+      console.log('result:', result);
       if (result.data.tokenDayDatas.length < 1000) {
         allFound = true
       }
       skip += 1000
       data = data.concat(result.data.tokenDayDatas)
     }
+    console.log('step2');
 
     let dayIndexSet = new Set()
     let dayIndexArray = []
@@ -580,13 +589,14 @@ const getTokenChartData = async (tokenAddress) => {
       dayIndexSet.add((data[i].date / oneDay).toFixed(0))
       dayIndexArray.push(data[i])
       dayData.dailyVolumeUSD = parseFloat(dayData.dailyVolumeUSD)
+      console.log('yo token:', data[i])
     })
 
     // fill in empty days
     let timestamp = data[0] && data[0].date ? data[0].date : startTime
     let latestLiquidityUSD = data[0] && data[0].totalLiquidityUSD
     let latestPriceUSD = data[0] && data[0].priceUSD
-    let latestPairDatas = data[0] && data[0].mostLiquidPairs
+    //let latestPairDatas = data[0] && data[0].mostLiquidPairs
     let index = 1
     while (timestamp < utcEndTime.startOf('minute').unix() - oneDay) {
       const nextDay = timestamp + oneDay
@@ -603,7 +613,7 @@ const getTokenChartData = async (tokenAddress) => {
       } else {
         latestLiquidityUSD = dayIndexArray[index].totalLiquidityUSD
         latestPriceUSD = dayIndexArray[index].priceUSD
-        latestPairDatas = dayIndexArray[index].mostLiquidPairs
+        //latestPairDatas = dayIndexArray[index].mostLiquidPairs
         index = index + 1
       }
       timestamp = nextDay
@@ -637,6 +647,7 @@ export function useTokenData(tokenAddress) {
   useEffect(() => {
     if (!tokenData && ethPrice && ethPriceOld && isAddress(tokenAddress)) {
       getTokenData(tokenAddress, ethPrice, ethPriceOld).then((data) => {
+        
         update(tokenAddress, data)
       })
     }
@@ -712,7 +723,6 @@ export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
   const [state, { updatePriceData }] = useTokenDataContext()
   const chartData = state?.[tokenAddress]?.[timeWindow]?.[interval]
   const [latestBlock] = useLatestBlocks()
-
   useEffect(() => {
     const currentTime = dayjs.utc()
     const windowSize = timeWindow === timeframeOptions.MONTH ? 'month' : 'week'

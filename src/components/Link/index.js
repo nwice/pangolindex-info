@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link as RebassLink } from 'rebass'
 import { Link as RouterLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -10,11 +9,9 @@ const WrappedLink = ({ external, children, ...rest }) => (
     target={external ? '_blank' : null}
     rel={external ? 'noopener noreferrer' : null}
     color={({ theme }) => theme.linkColor }
-
-    {...rest}
+    as={RouterLink}
+    {...rest}  
   >
-
-
     {children}
   </RebassLink>
 )

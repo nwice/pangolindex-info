@@ -8,8 +8,6 @@ import { usePrevious } from 'react-use'
 import { Play } from 'react-feather'
 import { useDarkModeManager } from '../../contexts/LocalStorage'
 import { IconWrapper } from '..'
-import { COLORATION } from '../../constants'
-import ThemeProvider from '../../Theme'
 
 dayjs.extend(utc)
 
@@ -79,15 +77,19 @@ const TradingViewChart = ({
     }
   }, [chartCreated, darkMode, previousTheme, type])
 
+
+  const innerChartColor = 'pink'
+
   // if no chart created yet, create one with options and add to DOM manually
-  useEffect((theme) => {
+  useEffect(() => {
     if (!chartCreated && formattedData) {
       var chart = createChart(ref.current, {
         width: width,
         height: HEIGHT,
         layout: {
-          backgroundColor: 'transparent',
-          textColor: textColor,
+          backgroundColor: 'transparent',          
+          textColor: innerChartColor,
+
         },
         rightPriceScale: {
           scaleMargins: {
@@ -101,11 +103,11 @@ const TradingViewChart = ({
         },
         grid: {
           horzLines: {
-            color: theme.chartHorzLines,
+            color: 'rgba(197, 203, 206, 0.5)', // theme.chartHorzLines,
             visible: false,
           },
           vertLines: {
-            color: theme.chartVertLines,
+            color: 'rgba(197, 203, 206, 0.5)', // theme.chartVertLines,
             visible: false,
           },
         },
@@ -122,12 +124,13 @@ const TradingViewChart = ({
         localization: {
           priceFormatter: (val) => formattedNum(val, true),
         },
+        handleScroll:false, 
+        handleScale: false
       })
-
       var series =
         type === CHART_TYPES.BAR
           ? chart.addHistogramSeries({
-            color: theme.chartHistogramColor,
+            color: 'rgba(197, 203, 206, 0.5)', // theme.chartHistogramColor,
             priceFormat: {
               type: 'volume',
             },
@@ -135,13 +138,13 @@ const TradingViewChart = ({
               top: 0.32,
               bottom: 0,
             },
-            lineColor: theme.chartHistogramLinColor,
+            lineColor: 'rgba(197, 203, 206, 0.5)', // theme.chartHistogramLinColor,
             lineWidth: 3,
           })
           : chart.addAreaSeries({
-            topColor: theme.chartTopColor,
-            bottomColor: theme.chartBottomColor,
-            lineColor: theme.chartLineColor,
+            topColor: 'rgba(197, 203, 206, 0.5)', //areaSeriesColor,
+            bottomColor: 'rgba(197, 203, 206, 0.5)', //areaSeriesColor,
+            lineColor: 'rgba(197, 203, 206, 0.5)', // areaSeriesColor,
             lineWidth: 3,
           })
 
@@ -159,16 +162,16 @@ const TradingViewChart = ({
       // format numbers
       let percentChange = baseChange?.toFixed(2)
       let formattedPercentChange = (percentChange > 0 ? '+' : '') + percentChange + '%'
-      let color = percentChange >= 0 ? 'green' : 'red'
+      let green_red = percentChange >= 0 ? 'green' : 'red'
 
       // get the title of the chart
       function setLastBarText() {
         toolTip.innerHTML =
-          `<div style="font-size: 16px; margin: 4px 0px; color: ${textColor};">${title} ${type === CHART_TYPES.BAR && !useWeekly ? '(24hr)' : ''
+          `<div style="font-size: 16px; margin: 4px 0px; color: ${innerChartColor};">${title} ${type === CHART_TYPES.BAR && !useWeekly ? '(24hr)' : ''
           }</div>` +
-          `<div style="font-size: 22px; margin: 4px 0px; color:${textColor}" >` +
+          `<div style="font-size: 22px; margin: 4px 0px; color:${innerChartColor}" >` +
           formattedNum(base ?? 0, true) +
-          `<span style="margin-left: 10px; font-size: 16px; color: ${color};">${formattedPercentChange}</span>` +
+          `<span style="margin-left: 10px; font-size: 16px; color: ${green_red};">${formattedPercentChange}</span>` +
           '</div>'
       }
       setLastBarText()
@@ -197,8 +200,8 @@ const TradingViewChart = ({
           var price = param.seriesPrices.get(series)
 
           toolTip.innerHTML =
-            `<div style="font-size: 16px; margin: 4px 0px; color: ${textColor};">${title}</div>` +
-            `<div style="font-size: 22px; margin: 4px 0px; color: ${textColor}">` +
+            `<div style="font-size: 16px; margin: 4px 0px; color: ${innerChartColor};">${title}</div>` +
+            `<div style="font-size: 22px; margin: 4px 0px; color: ${innerChartColor}">` +
             formattedNum(price, true) +
             '</div>' +
             '<div>' +
@@ -218,7 +221,6 @@ const TradingViewChart = ({
     darkMode,
     data,
     formattedData,
-    textColor,
     title,
     topScale,
     type,
@@ -238,11 +240,7 @@ const TradingViewChart = ({
     <Wrapper>
       <div ref={ref} id={'test-id' + type} />
       <IconWrapper>
-        <Play
-          onClick={() => {
-            chartCreated && chartCreated.timeScale().fitContent()
-          }}
-        />
+        
       </IconWrapper>
     </Wrapper>
   )

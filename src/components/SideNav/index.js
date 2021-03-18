@@ -7,7 +7,7 @@ import { useMedia } from 'react-use'
 import { transparentize } from 'polished'
 import { TYPE } from '../../Theme'
 import { withRouter } from 'react-router-dom'
-import { TrendingUp, List, PieChart, Disc, Activity } from 'react-feather'
+import { TrendingUp, List, PieChart, Disc, Activity, MessageCircle, Home } from 'react-feather'
 import Link from '../Link'
 
 import TwitterLogo from '../../assets/twitter.svg'
@@ -143,8 +143,10 @@ function SideNav({ history }) {
               <AutoColumn gap="1.25rem" style={{ marginTop: '1rem' }}>
                 <BasicLink to="/home">
                   <Option activeText={history.location.pathname === '/home' ?? undefined}>
-                    <TrendingUp size={20} style={{ marginRight: '.75rem' }} />
-                    Overview
+                    <Home size={20} style={{ marginRight: '.75rem' }}/>
+                    <div style={{ lineHeight: '20px'}}>
+                      Overview
+                    </div>
                   </Option>
                 </BasicLink>
                 <BasicLink to="/tokens">
@@ -155,8 +157,10 @@ function SideNav({ history }) {
                       undefined
                     }
                   >
-                    <Disc size={20} style={{ marginRight: '.75rem' }} />
-                    Tokens
+                    <Disc baseline="true" size={20} style={{ marginRight: '.75rem' }} />
+                    <div style={{ lineHeight: '20px'}}>
+                      Tokens
+                    </div>
                   </Option>
                 </BasicLink>
                 <BasicLink to="/pairs">
@@ -167,8 +171,10 @@ function SideNav({ history }) {
                       undefined
                     }
                   >
-                    <PieChart size={20} style={{ marginRight: '.75rem' }} />
-                    Pairs
+                    <PieChart baseline="true" size={20} style={{ marginRight: '.75rem' }} />
+                    <div style={{ lineHeight: '20px'}}>
+                      Pairs
+                    </div>
                   </Option>
                 </BasicLink>
                 <BasicLink to="/txs">
@@ -179,8 +185,10 @@ function SideNav({ history }) {
                       undefined
                     }
                   >
-                    <Activity size={20} style={{ marginRight: '.75rem' }} />
-                    Transactions
+                    <Activity baseline="true" size={20} style={{ marginRight: '.75rem' }} />
+                    <div style={{ lineHeight: '20px'}}>
+                      Transactions
+                    </div>
                   </Option>
                 </BasicLink>
 
@@ -192,8 +200,24 @@ function SideNav({ history }) {
                       undefined
                     }
                   >
-                    <List size={20} style={{ marginRight: '.75rem' }} />
-                    Accounts
+                    <List baseline="true" size={20} style={{ marginRight: '.75rem' }} />
+                    <div style={{ lineHeight: '20px'}}>
+                      Accounts
+                    </div>
+                  </Option>
+                </BasicLink>
+                <BasicLink to="/txs">
+                  <Option
+                    activeText={
+                      (history.location.pathname.split('/')[1] === 'accounts' ||
+                        history.location.pathname.split('/')[1] === 'account') ??
+                      undefined
+                    }
+                    >
+                    <MessageCircle baseline="true" size={20} style={{ marginRight: '.75rem' }} />
+                    <div style={{ lineHeight: '20px'}}>
+                      Media
+                    </div>
                   </Option>
                 </BasicLink>
               </AutoColumn>
@@ -201,41 +225,41 @@ function SideNav({ history }) {
           </AutoColumn>
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem', display: 'none' }}>
             <MobileWrapper>
-              <Link href="https://app.pangolin.exchange" target="_blank">
+              <Link to="https://app.pangolin.exchange" target="_blank">
                 <img width={'24px'} src={ChromeLogo} alt="Pangolindex" />
               </Link>
-              <Link href="https://app.pangolin.exchange" target="_blank" disabled="disabled">
+              <Link to="https://app.pangolin.exchange" target="_blank" disabled="disabled">
                 <img width={'24px'} src={AndroidLogo} alt="Pangolindex" />
               </Link>
-              <Link href="https://app.pangolin.exchange" target="_blank" disabled="disabled">
+              <Link to="https://app.pangolin.exchange" target="_blank" disabled="disabled">
                 <img width={'24px'} src={appleLogo} alt="Apple Play Store" />
               </Link>
             </MobileWrapper>
             <HeaderText>
-              <Link href="https://discord.gg/PARrDYYbfw" target="_blank">
+              <Link to="https://discord.gg/PARrDYYbfw" target="_blank">
                 <img width={'24px'} src={discordLogo} alt="Discord" />
               </Link>
             </HeaderText>
             <MobileWrapper>
-              <Link href="https://twitter.com/pangolindex" target="_blank">
+              <Link to="https://twitter.com/pangolindex" target="_blank">
                 <img width={'24px'} src={TwitterLogo} alt="Twitter" />
               </Link>
-              <Link href="https://medium.com/avalancheavax" target="_blank">
+              <Link to="https://medium.com/avalancheavax" target="_blank">
                 <img width={'24px'} src={MediumLogo} alt="Twitter" />
               </Link>
-              <Link href="https://t.me/pangolindex" target="_blank">
+              <Link to="https://t.me/pangolindex" target="_blank">
                 <img width={'24px'} src={TelegramLogo} alt="Twitter" />
               </Link>
             </MobileWrapper>
             <MobileWrapper>
-              <Link href="https://twitter.com/avalancheavax" target="_blank">
+              <Link to="https://twitter.com/avalancheavax" target="_blank">
                 <img width={'24px'} src={AvaxLogo} alt="Twitter" />
               </Link>
-              <Link href="https://wallet.avax.network" target="_blank">
+              <Link to="https://wallet.avax.network" target="_blank">
                 <img width={'24px'} src={avaxWalletLogo} alt="Twitter" />
               </Link>
             </MobileWrapper>
-            
+
           </AutoColumn>
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
             <Toggle isActive={isDark} toggle={toggleDarkMode} />
@@ -244,7 +268,7 @@ function SideNav({ history }) {
             <Polling style={{ marginLeft: '.5rem' }}>
               <PollingDot />
               <a href="">
-                <TYPE.small color={'sideNavPollingColor'}>
+                <TYPE.small color={'pollingColor'}>
                   Updated {!!seconds ? seconds + 's' : '-'} ago <br />
                 </TYPE.small>
               </a>

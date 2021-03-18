@@ -6,7 +6,7 @@ import { toK, toNiceDate, toNiceDateYear, formattedNum, getTimeframe } from '../
 import { OptionButton } from '../ButtonStyled'
 import { darken } from 'polished'
 import { useMedia } from 'react-use'
-import { COLORATION, timeframeOptions } from '../../constants'
+import { timeframeOptions } from '../../constants'
 import DropdownSelect from '../DropdownSelect'
 import { useUserLiquidityChart } from '../../contexts/User'
 import LocalLoader from '../LocalLoader'
@@ -23,6 +23,23 @@ const ChartWrapper = styled.div`
   }
 `
 
+const StyledTooltip = styled(Tooltip)`
+  contentStyle: {
+    padding: '10px 14px',
+    borderRadius: 10,
+    borderColor: 'pink',
+    color: 'yellow',
+  }
+`
+
+const tooltip = ``
+
+const stroke = `${({ theme }) => theme.color}`
+
+const Stop = styled.stop`
+  stopColor=${({ theme }) => theme.customColor};
+`
+
 const UserChart = ({ account }) => {
   const chartData = useUserLiquidityChart(account)
 
@@ -32,14 +49,13 @@ const UserChart = ({ account }) => {
   const below600 = useMedia('(max-width: 600px)')
   const above1600 = useMedia('(min-width: 1600px)')
 
+  const meme = 'blue'
+
   const domain = [(dataMin) => (dataMin > utcStartTime ? dataMin : utcStartTime), 'dataMax']
 
   const aspect = above1600 ? 60 / 12 : below600 ? 60 / 42 : 60 / 16
 
   const [darkMode] = useDarkModeManager()
-  const textColor = darkMode ? 'white' : 'black'
-
-
   const [ethPrice] = useEthPrice()
 
   return (
@@ -81,8 +97,8 @@ const UserChart = ({ account }) => {
           <AreaChart margin={{ top: 0, right: 10, bottom: 6, left: 0 }} barCategoryGap={1} data={chartData}>
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLORATION.chart5} stopOpacity={0.35} />
-                <stop offset="95%" stopColor={COLORATION.chart5} stopOpacity={0} />
+                <Stop offset="5%" stopOpacity={0.35} />
+                <Stop offset="95%" stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis
@@ -93,7 +109,7 @@ const UserChart = ({ account }) => {
               minTickGap={0}
               tickFormatter={(tick) => toNiceDate(tick)}
               dataKey="date"
-              tick={{ fill: textColor }}
+              tick={meme}
               type={'number'}
               domain={domain}
             />
@@ -106,20 +122,14 @@ const UserChart = ({ account }) => {
               interval="preserveEnd"
               minTickGap={6}
               yAxisId={0}
-              tick={{ fill: textColor }}
+              tick={meme}
             />
-            <Tooltip
+            <StyledTooltip
               cursor={true}
-              formatter={(val) => formattedNum(val, true)}
+              formatter={(val) => formattedNum(val * ethPrice, true)}
               labelFormatter={(label) => toNiceDateYear(label)}
               labelStyle={{ paddingTop: 4 }}
-              contentStyle={{
-                padding: '10px 14px',
-                borderRadius: 10,
-                borderColor: COLORATION.chart5,
-                color: 'black',
-              }}
-              wrapperStyle={{ top: -70, left: -10 }}
+              wrapperStyle={{ top: -70, left: -10 }}  
             />
             <Area
               key={'other'}
@@ -130,7 +140,7 @@ const UserChart = ({ account }) => {
               type="monotone"
               name={'Liquidity'}
               yAxisId={0}
-              stroke={darken(0.12, COLORATION.chart5)}
+              stroke={stroke}
               fill="url(#colorUv)"
             />
           </AreaChart>
